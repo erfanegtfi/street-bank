@@ -32,4 +32,7 @@ class LightColors implements MyColors {
 
   @override
   Color get gray => const Color(0xFFF3F4F6); //
+
+  @override
+  Color get textInputBorderColor => const Color(0xFFefefef);
 }

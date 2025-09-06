@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class AppDimen {
+  static const double buttonHeight = 50;
+
   static const double horizontalSpacing = 16;
   static const double verticalSpacing = 20;
 
