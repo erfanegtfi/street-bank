@@ -32,7 +32,15 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  design_system:
+    path: libraries/design_system
+  app_widgets:
+    path: libraries/app_widgets
+
   flutter_lints: ^5.0.0
+  flutter_riverpod: ^2.6.1
+  get_it: ^8.2.0
+  injectable: ^2.5.1
 
 
 flutter:

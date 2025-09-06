@@ -29,4 +29,7 @@ class LightColors implements MyColors {
 
   @override
   Color get white => const Color(0xFFFFFFFF);
+
+  @override
+  Color get gray => const Color(0xFFF3F4F6); //
 }

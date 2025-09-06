@@ -30,4 +30,7 @@ class DarkColors implements MyColors {
 
   @override
   Color get white => const Color(0xFFFFFFFF);
+
+  @override
+  Color get gray => const Color(0xFF1f2b4a);
 }

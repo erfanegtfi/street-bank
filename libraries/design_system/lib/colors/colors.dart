@@ -10,6 +10,7 @@ abstract class MyColors {
   Color get error;
 
   Color get white;
+  Color get gray;
 
   Color get screenBackground;
   Color get appbarBackground;
