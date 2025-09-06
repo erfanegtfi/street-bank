@@ -1,5 +1,6 @@
 import 'form_validation_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:app_data/general_error.dart';
 
 part 'view_state.freezed.dart';
 
@@ -8,5 +9,6 @@ abstract class ViewState<T> with _$ViewState<T> {
   const factory ViewState.init() = Init<T>;
   const factory ViewState.loading() = Loading<T>;
   const factory ViewState.success(T value) = Success<T>;
+  const factory ViewState.error(GeneralError error) = Error<T>;
   const factory ViewState.formValidation(FormValidationState validation) = FormValidation;
 }

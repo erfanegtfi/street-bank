@@ -15,4 +15,5 @@ abstract class MyColors {
   Color get screenBackground;
   Color get appbarBackground;
   Color get textInputBorderColor;
+  Color get greenMessageBack;
 }

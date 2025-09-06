@@ -35,4 +35,7 @@ class LightColors implements MyColors {
 
   @override
   Color get textInputBorderColor => const Color(0xFFcccccc);
+
+  @override
+  Color get greenMessageBack => const Color(0xFF0ECB81);
 }

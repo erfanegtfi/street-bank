@@ -9,4 +9,4 @@ final serviceLocator = GetIt.instance;
   preferRelativeImports: true, // default
   asExtension: false, // default true
 )
-GetIt configureDependencies() => init(serviceLocator);
+Future<GetIt> configureDependencies() => init(serviceLocator);

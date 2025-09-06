@@ -1,28 +1,43 @@
+import 'package:app_utils/response/data_response.dart';
 import 'package:app_utils/states/form_validation_state.dart';
 import 'package:app_utils/states/view_state.dart';
+import 'package:design_system/app_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:street_bank/app/di/injector.dart';
-import 'package:street_bank/features/authentication/domain/usecase/login_form_validation.dart';
+import 'package:street_bank/features/authentication/domain/usecase/login_form_validation_usecase.dart';
+import 'package:street_bank/features/authentication/domain/usecase/login_user_usecase.dart';
+import 'package:street_bank/features/authentication/domain/usecase/params/login_params.dart';
 
-final loginProvider = StateNotifierProvider.autoDispose<LoginNotifier, ViewState<bool>>((ref) {
+final loginProvider = StateNotifierProvider.autoDispose<LoginNotifier, ViewState<String>>((ref) {
   LoginFormValidationUsecase loginFormValidationUsecase = serviceLocator<LoginFormValidationUsecase>();
+  LoginUserUsecase loginUserUsecase = serviceLocator<LoginUserUsecase>();
 
-  return LoginNotifier(loginFormValidationUsecase, ref);
+  return LoginNotifier(loginFormValidationUsecase, loginUserUsecase, ref);
 });
 
-class LoginNotifier extends StateNotifier<ViewState<bool>> {
+class LoginNotifier extends StateNotifier<ViewState<String>> {
   final LoginFormValidationUsecase loginFormValidationUsecase;
+  final LoginUserUsecase loginUserUsecase;
 
   final Ref ref;
 
-  LoginNotifier(this.loginFormValidationUsecase, this.ref) : super(ViewState.init());
+  LoginNotifier(this.loginFormValidationUsecase, this.loginUserUsecase, this.ref) : super(ViewState.init());
 
-  loginValidateForm(LoginFormParam param) {
+  void loginValidateForm(LoginFormParam param) {
     FormValidationState va = loginFormValidationUsecase.call(param);
     state = ViewState.formValidation(va);
   }
 
-  void login(LoginFormParam swap) async {
+  void login(LoginFormParam param) async {
     state = ViewState.loading();
+    DataResponse<bool> result = loginUserUsecase(param);
+    result.when(
+      success: (data) {
+        state = ViewState.success(AppText.loginSuccessMessage);
+      },
+      error: (error) {
+        state = ViewState.error(error);
+      },
+    );
   }
 }

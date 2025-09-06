@@ -14,6 +14,8 @@ dependencies:
 
   design_system:
     path: ../design_system
+  app_data:
+    path: ../app_data
 
   freezed: ^3.2.0
 

@@ -55,13 +55,14 @@ extension ViewStatePatterns<T> on ViewState<T> {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Init<T> value)?  init,TResult Function( Loading<T> value)?  loading,TResult Function( Success<T> value)?  success,TResult Function( FormValidation<T> value)?  formValidation,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( Init<T> value)?  init,TResult Function( Loading<T> value)?  loading,TResult Function( Success<T> value)?  success,TResult Function( Error<T> value)?  error,TResult Function( FormValidation<T> value)?  formValidation,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case Init() when init != null:
 return init(_that);case Loading() when loading != null:
 return loading(_that);case Success() when success != null:
-return success(_that);case FormValidation() when formValidation != null:
+return success(_that);case Error() when error != null:
+return error(_that);case FormValidation() when formValidation != null:
 return formValidation(_that);case _:
   return orElse();
 
@@ -80,13 +81,14 @@ return formValidation(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Init<T> value)  init,required TResult Function( Loading<T> value)  loading,required TResult Function( Success<T> value)  success,required TResult Function( FormValidation<T> value)  formValidation,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( Init<T> value)  init,required TResult Function( Loading<T> value)  loading,required TResult Function( Success<T> value)  success,required TResult Function( Error<T> value)  error,required TResult Function( FormValidation<T> value)  formValidation,}){
 final _that = this;
 switch (_that) {
 case Init():
 return init(_that);case Loading():
 return loading(_that);case Success():
-return success(_that);case FormValidation():
+return success(_that);case Error():
+return error(_that);case FormValidation():
 return formValidation(_that);case _:
   throw StateError('Unexpected subclass');
 
@@ -104,13 +106,14 @@ return formValidation(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Init<T> value)?  init,TResult? Function( Loading<T> value)?  loading,TResult? Function( Success<T> value)?  success,TResult? Function( FormValidation<T> value)?  formValidation,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( Init<T> value)?  init,TResult? Function( Loading<T> value)?  loading,TResult? Function( Success<T> value)?  success,TResult? Function( Error<T> value)?  error,TResult? Function( FormValidation<T> value)?  formValidation,}){
 final _that = this;
 switch (_that) {
 case Init() when init != null:
 return init(_that);case Loading() when loading != null:
 return loading(_that);case Success() when success != null:
-return success(_that);case FormValidation() when formValidation != null:
+return success(_that);case Error() when error != null:
+return error(_that);case FormValidation() when formValidation != null:
 return formValidation(_that);case _:
   return null;
 
@@ -128,12 +131,13 @@ return formValidation(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  init,TResult Function()?  loading,TResult Function( T value)?  success,TResult Function( FormValidationState validation)?  formValidation,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  init,TResult Function()?  loading,TResult Function( T value)?  success,TResult Function( GeneralError error)?  error,TResult Function( FormValidationState validation)?  formValidation,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case Init() when init != null:
 return init();case Loading() when loading != null:
 return loading();case Success() when success != null:
-return success(_that.value);case FormValidation() when formValidation != null:
+return success(_that.value);case Error() when error != null:
+return error(_that.error);case FormValidation() when formValidation != null:
 return formValidation(_that.validation);case _:
   return orElse();
 
@@ -152,12 +156,13 @@ return formValidation(_that.validation);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  init,required TResult Function()  loading,required TResult Function( T value)  success,required TResult Function( FormValidationState validation)  formValidation,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  init,required TResult Function()  loading,required TResult Function( T value)  success,required TResult Function( GeneralError error)  error,required TResult Function( FormValidationState validation)  formValidation,}) {final _that = this;
 switch (_that) {
 case Init():
 return init();case Loading():
 return loading();case Success():
-return success(_that.value);case FormValidation():
+return success(_that.value);case Error():
+return error(_that.error);case FormValidation():
 return formValidation(_that.validation);case _:
   throw StateError('Unexpected subclass');
 
@@ -175,12 +180,13 @@ return formValidation(_that.validation);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  init,TResult? Function()?  loading,TResult? Function( T value)?  success,TResult? Function( FormValidationState validation)?  formValidation,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  init,TResult? Function()?  loading,TResult? Function( T value)?  success,TResult? Function( GeneralError error)?  error,TResult? Function( FormValidationState validation)?  formValidation,}) {final _that = this;
 switch (_that) {
 case Init() when init != null:
 return init();case Loading() when loading != null:
 return loading();case Success() when success != null:
-return success(_that.value);case FormValidation() when formValidation != null:
+return success(_that.value);case Error() when error != null:
+return error(_that.error);case FormValidation() when formValidation != null:
 return formValidation(_that.validation);case _:
   return null;
 
@@ -313,6 +319,72 @@ class _$SuccessCopyWithImpl<T,$Res>
   return _then(Success<T>(
 freezed == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
 as T,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class Error<T> implements ViewState<T> {
+  const Error(this.error);
+  
+
+ final  GeneralError error;
+
+/// Create a copy of ViewState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ErrorCopyWith<T, Error<T>> get copyWith => _$ErrorCopyWithImpl<T, Error<T>>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Error<T>&&(identical(other.error, error) || other.error == error));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,error);
+
+@override
+String toString() {
+  return 'ViewState<$T>.error(error: $error)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ErrorCopyWith<T,$Res> implements $ViewStateCopyWith<T, $Res> {
+  factory $ErrorCopyWith(Error<T> value, $Res Function(Error<T>) _then) = _$ErrorCopyWithImpl;
+@useResult
+$Res call({
+ GeneralError error
+});
+
+
+
+
+}
+/// @nodoc
+class _$ErrorCopyWithImpl<T,$Res>
+    implements $ErrorCopyWith<T, $Res> {
+  _$ErrorCopyWithImpl(this._self, this._then);
+
+  final Error<T> _self;
+  final $Res Function(Error<T>) _then;
+
+/// Create a copy of ViewState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? error = null,}) {
+  return _then(Error<T>(
+null == error ? _self.error : error // ignore: cast_nullable_to_non_nullable
+as GeneralError,
   ));
 }
 

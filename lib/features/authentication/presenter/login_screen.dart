@@ -1,14 +1,15 @@
+import 'package:app_data/general_error.dart';
 import 'package:app_utils/states/view_state.dart';
-import 'package:design_system/app_text.dart';
+import 'package:app_widgets/dialog/utils_message.dart';
 import 'package:flutter/material.dart';
 import 'package:app_widgets/my_scaffold.dart';
 import 'package:app_widgets/input_text_field.dart';
-import 'package:app_widgets/elevated_button_widget.dart';
+import 'package:app_widgets/buttons/elevated_button_widget.dart';
 import 'package:app_utils/validations/form_validators.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:design_system/export_app_res.dart';
 import 'package:app_widgets/extentions.dart';
-import 'package:street_bank/features/authentication/domain/usecase/login_form_validation.dart';
+import 'package:street_bank/features/authentication/domain/usecase/params/login_params.dart';
 import 'package:street_bank/features/authentication/presenter/login_provider.dart';
 
 import 'widgets/header_logo_widget.dart';
@@ -94,13 +95,27 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   LoginFormParam getParam() {
     String email = _emailController.text.trim();
-    String password = _emailController.text.trim();
+    String password = _passwordController.text.trim();
     return LoginFormParam(email: email, password: password);
   }
 
   setupLoginProviderListener() {
-    ref.listen<ViewState>(loginProvider, (previous, next) {
-      next.when(init: () {}, loading: () {}, success: (data) {}, formValidation: (validation) {});
+    ref.listen<ViewState<String>>(loginProvider, (previous, next) {
+      next.maybeWhen(
+        orElse: () {},
+        success: (message) {
+          showFlushbar(context: context, title: message);
+        },
+        formValidation: (validation) {
+          if (validation.valid)
+            ref.read(loginProvider.notifier).login(getParam());
+          else
+            context.showError(validation.errorMessage, () {});
+        },
+        error: (GeneralError error) {
+          context.showError(error.message, () {});
+        },
+      );
     });
   }
 

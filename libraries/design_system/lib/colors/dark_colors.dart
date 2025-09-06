@@ -36,4 +36,7 @@ class DarkColors implements MyColors {
 
   @override
   Color get textInputBorderColor => const Color(0xff333333);
+
+  @override
+  Color get greenMessageBack => const Color(0xFF0ECB81);
 }

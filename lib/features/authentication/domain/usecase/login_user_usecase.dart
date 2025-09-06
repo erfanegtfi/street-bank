@@ -1,0 +1,21 @@
+import 'package:app_data/general_error.dart';
+import 'package:app_data/local/local_repository.dart';
+import 'package:design_system/app_text.dart';
+import 'package:app_utils/constants.dart';
+import 'package:app_utils/response/data_response.dart';
+import 'package:injectable/injectable.dart';
+import 'package:street_bank/features/authentication/domain/usecase/params/login_params.dart';
+
+@injectable
+class LoginUserUsecase {
+  LocalRepository localRepository;
+  LoginUserUsecase(this.localRepository);
+
+  DataResponse<bool> call(LoginFormParam params) {
+    if (params.email == Constants.loginEmail && params.password == Constants.loginPass) {
+      localRepository.setUserStatus(true);
+      return DataResponse.success(true);
+    }
+    return DataResponse.error(GeneralError.withMessage(AppText.loginFormValidatorInvalidEmailOrPass));
+  }
+}

@@ -4,7 +4,8 @@ import 'package:street_bank/app/app.dart';
 import 'package:street_bank/app/di/injector.dart';
 
 void main() async {
-  configureDependencies();
-
+  WidgetsFlutterBinding.ensureInitialized();
+  await configureDependencies();
+  // await serviceLocator.allReady();
   runApp(ProviderScope(observers: const [], child: MyApp()));
 }

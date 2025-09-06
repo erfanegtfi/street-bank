@@ -1,6 +1,10 @@
 class AppText {
   static const String appName = "Street Bank";
 
+  static const String errorUnknown = "Unknown error!";
+  static const String accept = "Accept";
+  static const String close = "Close";
+
   static const String validatorEmpty = "Please fill this field";
   static const String validatorInvalidEmail = "Invalid Email";
   static const String validatorInvalidPasswordLength = "Password should have 6 character at least";
@@ -12,4 +16,5 @@ class AppText {
   static const String loginScreenFormSubmitBotton = "Login";
 
   static const String loginFormValidatorInvalidEmailOrPass = "Invalid email or password";
+  static const String loginSuccessMessage = "Welcome to your account";
 }
