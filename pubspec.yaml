@@ -32,6 +32,8 @@ dependencies:
     path: libraries/app_widgets
   app_utils:
     path: libraries/app_utils
+  app_data:
+    path: libraries/app_data
 
   cupertino_icons: ^1.0.8
   flutter_lints: ^5.0.0
