@@ -1,3 +1,4 @@
+import 'package:app_widgets/extentions.dart';
 import 'package:design_system/export_app_res.dart';
 import 'package:flutter/material.dart';
 
@@ -15,11 +16,10 @@ class MyElevatedButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: backColor ?? appColors().primary,
         minimumSize: Size(double.infinity, AppDimen.buttonHeight),
-        // foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppDimen.radiusNormal)),
       ),
       onPressed: onPressed,
-      child: Text(title, style: textStyle),
+      child: Text(title, style: textStyle ?? context.textTheme.bodyLarge?.copyWith(color: Colors.white)),
     );
   }
 }

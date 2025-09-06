@@ -102,10 +102,10 @@ class _MyInputTextFieldState extends State<MyInputTextField> {
             suffixIcon: getSuffixIcon(),
 
             filled: true,
-            fillColor: widget.backColor,
+            fillColor: widget.backColor ?? appColors().screenBackground,
 
             focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(width: 1, color: appColors().primary),
+              borderSide: BorderSide(width: 1.5, color: appColors().primary),
               borderRadius: BorderRadius.circular(12),
             ),
             enabledBorder: OutlineInputBorder(
