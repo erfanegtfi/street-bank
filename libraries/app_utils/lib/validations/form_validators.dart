@@ -1,10 +1,9 @@
+import 'package:app_utils/utils.dart';
 import 'package:app_utils/validator_builder.dart';
 import 'package:design_system/app_text.dart';
 
 export 'package:app_utils/validator_builder.dart';
-
-String _emailPattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-int _passwordMinLength = 6;
+export 'package:app_utils/utils.dart';
 
 extension NotEmpty on ValidationBuilder {
   ValidationBuilder notEmpty({String? message}) => add((value) {
@@ -18,9 +17,8 @@ extension NotEmpty on ValidationBuilder {
 
 extension Email on ValidationBuilder {
   ValidationBuilder email({String? message}) => add((value) {
-    RegExp regExp = RegExp(_emailPattern);
-    if (value == null || value.isEmpty == true) return null;
-    if (!regExp.hasMatch(value.trim())) {
+    if (value == null) return null;
+    if (!checkEmailValidation(value)) {
       return message ?? AppText.validatorInvalidEmail;
     } else {
       return null;
@@ -31,8 +29,8 @@ extension Email on ValidationBuilder {
 extension PasswordLength on ValidationBuilder {
   password({String? message}) => add((value) {
     if (value == null) return null;
-    if (value.trim().length < _passwordMinLength) {
-      return message ?? AppText.validatorInvalidLength;
+    if (!checkPasswordValidation(value)) {
+      return message ?? AppText.validatorInvalidPasswordLength;
     } else {
       return null;
     }

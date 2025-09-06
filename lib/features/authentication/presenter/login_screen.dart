@@ -1,3 +1,4 @@
+import 'package:app_utils/states/view_state.dart';
 import 'package:design_system/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:app_widgets/my_scaffold.dart';
@@ -7,6 +8,8 @@ import 'package:app_utils/validations/form_validators.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:design_system/export_app_res.dart';
 import 'package:app_widgets/extentions.dart';
+import 'package:street_bank/features/authentication/domain/usecase/login_form_validation.dart';
+import 'package:street_bank/features/authentication/presenter/login_provider.dart';
 
 import 'widgets/header_logo_widget.dart';
 
@@ -33,6 +36,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    setupLoginProviderListener();
     return MyScaffold(
       body: ListView(
         children: [
@@ -60,10 +64,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     textEditingController: _passwordController,
                   ),
                   const SizedBox(height: AppDimen.spacingXXLarge),
-
-                  MyElevatedButton(AppText.loginScreenFormSubmitBotton, () {
-                    if (_formKey.currentState!.validate()) {}
-                  }),
+                  getLoginButton(),
                 ],
               ),
             ),
@@ -71,6 +72,36 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ],
       ),
     );
+  }
+
+  getLoginButton() {
+    return Consumer(
+      builder: (context, ref, __) {
+        final reqult = ref.watch(loginProvider);
+        return reqult.maybeWhen(
+          loading: () => Center(child: CircularProgressIndicator()),
+          orElse: () {
+            return MyElevatedButton(AppText.loginScreenFormSubmitBotton, () {
+              if (_formKey.currentState!.validate()) {
+                ref.read(loginProvider.notifier).loginValidateForm(getParam());
+              }
+            });
+          },
+        );
+      },
+    );
+  }
+
+  LoginFormParam getParam() {
+    String email = _emailController.text.trim();
+    String password = _emailController.text.trim();
+    return LoginFormParam(email: email, password: password);
+  }
+
+  setupLoginProviderListener() {
+    ref.listen<ViewState>(loginProvider, (previous, next) {
+      next.when(init: () {}, loading: () {}, success: (data) {}, formValidation: (validation) {});
+    });
   }
 
   @override
