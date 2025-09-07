@@ -2,7 +2,7 @@ import 'package:app_widgets/widget_item_not_found.dart';
 import 'package:design_system/export_app_res.dart';
 import 'package:flutter/material.dart';
 import 'package:street_bank/features/account/domain/entities/transaction.dart';
-import 'package:street_bank/features/dashboard/presenter/widgets/item_transaction.dart';
+import 'package:street_bank/features/dashboard/presenter/widgets/transactions/item_transaction.dart';
 
 class TransactionListWidget extends StatelessWidget {
   final List<Transaction> transactionList;

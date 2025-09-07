@@ -11,6 +11,7 @@ import 'package:design_system/export_app_res.dart';
 import 'package:app_widgets/extentions.dart';
 import 'package:street_bank/features/authentication/domain/usecase/params/login_params.dart';
 import 'package:street_bank/features/authentication/presenter/login_provider.dart';
+import 'package:street_bank/features/home/home_provider.dart';
 
 import 'widgets/header_logo_widget.dart';
 
@@ -105,6 +106,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         orElse: () {},
         success: (message) {
           showFlushbar(context: context, title: message);
+          ref.read(homeProvider.notifier).userLogedin();
         },
         formValidation: (validation) {
           if (validation.valid)

@@ -12,4 +12,8 @@ class HomeNotifier extends AutoDisposeNotifier<bool> {
     _isUserLoginUsecase = locator<IsUserLoginUsecase>();
     return _isUserLoginUsecase();
   }
+
+  userLogedin() {
+    state = _isUserLoginUsecase();
+  }
 }

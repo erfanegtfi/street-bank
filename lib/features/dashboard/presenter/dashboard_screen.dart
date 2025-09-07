@@ -10,7 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:street_bank/features/account/domain/entities/transaction.dart';
 import 'package:street_bank/features/dashboard/presenter/providers/transaction_list_provider.dart';
 import 'package:street_bank/features/dashboard/presenter/widgets/dashboard_header_balance_widget.dart';
-import 'package:street_bank/features/dashboard/presenter/widgets/transaction_header_widget.dart';
+import 'package:street_bank/features/dashboard/presenter/widgets/transactions/transaction_header_widget.dart';
 import 'package:street_bank/features/dashboard/presenter/widgets/transaction_list.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
