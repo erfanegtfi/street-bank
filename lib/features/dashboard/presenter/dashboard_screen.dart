@@ -44,6 +44,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(child: HeaderBalance(balance: "200")),
+          SliverToBoxAdapter(child: SizedBox(height: AppDimen.spacingNormal)),
           SliverToBoxAdapter(child: TransactionListHeader()),
           SliverToBoxAdapter(child: SizedBox(height: AppDimen.spacingNormal)),
           getTransactionList(),

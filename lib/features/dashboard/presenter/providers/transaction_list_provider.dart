@@ -12,7 +12,7 @@ import 'package:street_bank/features/account/domain/usecase/transaction_list_use
 final dashboardTransactionListProvider = StateNotifierProvider.autoDispose<DashboardTransactionListNotifier, ViewState<List<Transaction>>>((
   ref,
 ) {
-  TransactionListUsecase transactionListUsecase = serviceLocator<TransactionListUsecase>();
+  TransactionListUsecase transactionListUsecase = locator<TransactionListUsecase>();
 
   return DashboardTransactionListNotifier(transactionListUsecase, ref);
 });

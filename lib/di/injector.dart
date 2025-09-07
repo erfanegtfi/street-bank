@@ -2,11 +2,11 @@ import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'injector.config.dart';
 
-final serviceLocator = GetIt.instance;
+final locator = GetIt.instance;
 
 @InjectableInit(
   initializerName: 'init', // default
   preferRelativeImports: true, // default
   asExtension: false, // default true
 )
-Future<GetIt> configureDependencies() => init(serviceLocator);
+Future<GetIt> configureDependencies() => init(locator);

@@ -7,6 +7,7 @@ import 'package:street_bank/di/injector.dart';
 import 'package:app_data/remote/configs/dio_configuration.dart';
 import 'package:dio/dio.dart';
 import 'package:street_bank/database/database.dart';
+import 'package:street_bank/navigation/navigation_service.dart';
 
 @module
 abstract class AppModule {
@@ -14,13 +15,16 @@ abstract class AppModule {
   @LazySingleton(order: -3)
   String get basetUrl => ApiDomain.baseDomain;
 
+  @lazySingleton
+  NavigationService get navigationService => NavigationService();
+
   @preResolve
   @LazySingleton(order: -2)
   Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
 
   @LazySingleton(order: -1)
   LocalRepository get userRepository {
-    return LocalRepositoryImpl(serviceLocator<SharedPreferences>());
+    return LocalRepositoryImpl(locator<SharedPreferences>());
   }
 
   @LazySingleton(order: -3)

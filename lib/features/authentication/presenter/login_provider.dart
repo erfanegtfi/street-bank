@@ -9,8 +9,8 @@ import 'package:street_bank/features/authentication/domain/usecase/login_user_us
 import 'package:street_bank/features/authentication/domain/usecase/params/login_params.dart';
 
 final loginProvider = StateNotifierProvider.autoDispose<LoginNotifier, ViewState<String>>((ref) {
-  LoginFormValidationUsecase loginFormValidationUsecase = serviceLocator<LoginFormValidationUsecase>();
-  LoginUserUsecase loginUserUsecase = serviceLocator<LoginUserUsecase>();
+  LoginFormValidationUsecase loginFormValidationUsecase = locator<LoginFormValidationUsecase>();
+  LoginUserUsecase loginUserUsecase = locator<LoginUserUsecase>();
 
   return LoginNotifier(loginFormValidationUsecase, loginUserUsecase, ref);
 });

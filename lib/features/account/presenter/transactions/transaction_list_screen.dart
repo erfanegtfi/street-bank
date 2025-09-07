@@ -6,6 +6,7 @@ import 'package:app_widgets/widget_item_not_found.dart';
 import 'package:design_system/export_app_res.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:street_bank/features/account/presenter/transactions/item_transaction.dart';
 import 'package:street_bank/features/account/presenter/transactions/transaction_list_provider.dart';
 
 class TransactionListScreen extends ConsumerStatefulWidget {
@@ -17,8 +18,20 @@ class TransactionListScreen extends ConsumerStatefulWidget {
 
 class _TransactionListScreenState extends ConsumerState<TransactionListScreen> {
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(transactionListProvider.notifier).subscribeOnTransactions();
+    });
+
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MyScaffold(body: getBody());
+    return MyScaffold(
+      body: getBody(),
+      appBar: AppBar(title: Text(AppText.transactionScreenTitle)),
+    );
   }
 
   Widget getBody() {
@@ -31,7 +44,7 @@ class _TransactionListScreenState extends ConsumerState<TransactionListScreen> {
           success: (transactions) {
             if (transactions.isNotEmpty) {
               return ListView.builder(
-                itemBuilder: (context, index) => ListTile(title: Text(transactions[index].description ?? "")),
+                itemBuilder: (context, index) => TransactionItem(transaction: transactions[index]),
                 itemCount: transactions.length,
               );
             } else {

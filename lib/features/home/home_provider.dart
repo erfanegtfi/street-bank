@@ -9,7 +9,7 @@ class HomeNotifier extends AutoDisposeNotifier<bool> {
 
   @override
   bool build() {
-    _isUserLoginUsecase = serviceLocator<IsUserLoginUsecase>();
+    _isUserLoginUsecase = locator<IsUserLoginUsecase>();
     return _isUserLoginUsecase();
   }
 }

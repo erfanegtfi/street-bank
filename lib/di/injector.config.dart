@@ -32,6 +32,7 @@ import '../features/authentication/domain/usecase/login_form_validation_usecase.
     as _i1062;
 import '../features/authentication/domain/usecase/login_user_usecase.dart'
     as _i364;
+import '../navigation/navigation_service.dart' as _i17;
 import 'injection_module.dart' as _i212;
 
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -66,6 +67,7 @@ Future<_i174.GetIt> init(
   gh.factory<_i24.TransactionListUsecase>(() => accountModule.prefs);
   gh.factory<_i1062.LoginFormValidationUsecase>(
       () => _i1062.LoginFormValidationUsecase());
+  gh.lazySingleton<_i17.NavigationService>(() => appModule.navigationService);
   gh.factory<_i482.TransactionsLocalDataSource>(() =>
       _i482.TransactionsLocalDataSourceImpl(
           database: gh<_i660.BankDatabase>()));

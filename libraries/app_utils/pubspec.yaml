@@ -18,6 +18,7 @@ dependencies:
     path: ../app_data
 
   freezed: ^2.5.7
+  intl: ^0.20.1
 
 dev_dependencies:
   flutter_test:

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:app_widgets/extentions.dart';
 import 'package:app_widgets/my_background_widget.dart';
 import 'package:design_system/export_app_res.dart';
+import 'package:street_bank/di/injector.dart';
+import 'package:street_bank/features/account/presenter/transactions/transaction_list_screen.dart';
 import 'package:street_bank/features/dashboard/presenter/widgets/dashboard_button_widget.dart';
+import 'package:street_bank/navigation/navigation_service.dart';
 
 class HeaderBalance extends StatelessWidget {
   final String balance;
@@ -30,7 +33,13 @@ class HeaderBalance extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              HeaderButton(title: AppText.homeScreenTransactions, icon: Icons.list_alt_rounded, onPressed: () {}),
+              HeaderButton(
+                title: AppText.homeScreenTransactions,
+                icon: Icons.list_alt_rounded,
+                onPressed: () {
+                  locator<NavigationService>().push(TransactionListScreen());
+                },
+              ),
               HeaderButton(title: AppText.homeScreenTransfer, icon: Icons.monetization_on, onPressed: () {}),
             ],
           ),

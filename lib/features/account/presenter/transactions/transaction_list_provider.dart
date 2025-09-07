@@ -9,7 +9,7 @@ import 'package:street_bank/features/account/domain/entities/transaction.dart';
 import 'package:street_bank/features/account/domain/usecase/transaction_list_usecase.dart';
 
 final transactionListProvider = StateNotifierProvider.autoDispose<TransactionListNotifier, ViewState<List<Transaction>>>((ref) {
-  TransactionListUsecase transactionListUsecase = serviceLocator<TransactionListUsecase>();
+  TransactionListUsecase transactionListUsecase = locator<TransactionListUsecase>();
 
   return TransactionListNotifier(transactionListUsecase, ref);
 });

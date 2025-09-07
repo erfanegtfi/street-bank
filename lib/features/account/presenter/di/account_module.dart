@@ -10,10 +10,10 @@ import 'package:street_bank/features/account/domain/usecase/transaction_list_use
 abstract class AccountModule {
   @LazySingleton(order: -1)
   AccountRepository get accountRepository => AccountRepositoryImpl(
-    accountRemoteDataSource: serviceLocator<AccountRemoteDataSource>(),
-    transactionsLocalDataSource: serviceLocator<TransactionsLocalDataSource>(),
+    accountRemoteDataSource: locator<AccountRemoteDataSource>(),
+    transactionsLocalDataSource: locator<TransactionsLocalDataSource>(),
   );
 
   @injectable
-  TransactionListUsecase get prefs => TransactionListUsecase(accountRepository: serviceLocator<AccountRepository>());
+  TransactionListUsecase get prefs => TransactionListUsecase(accountRepository: locator<AccountRepository>());
 }
