@@ -17,4 +17,10 @@ class AppText {
 
   static const String loginFormValidatorInvalidEmailOrPass = "Invalid email or password";
   static const String loginSuccessMessage = "Welcome to your account";
+  //
+  static const String homeScreenBalance = "Your balance:";
+  static const String homeScreenTransactions = "Transactions";
+  static const String homeScreenTransfer = "Transfer";
+  static const String homeScreenTransactionsList = "Transactions:";
+  static const String homeScreenTransactionsSeeAll = "See all";
 }
