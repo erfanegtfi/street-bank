@@ -26,4 +26,6 @@ class AppText {
   static const String homeScreenTransfer = "Transfer";
   static const String homeScreenTransactionsList = "Transactions:";
   static const String homeScreenTransactionsSeeAll = "See all";
+
+  static const String transactionScreenItemNotFound = "Item not found";
 }

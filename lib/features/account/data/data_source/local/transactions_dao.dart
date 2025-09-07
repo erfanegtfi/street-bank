@@ -3,7 +3,7 @@ import 'package:street_bank/features/account/data/model/transaction_data_model.d
 
 @dao
 abstract class TransactionDao {
-  @Query('SELECT * FROM AnnouncementClosed')
+  @Query('SELECT * FROM transactions')
   Future<List<TransactionDataModel>> getAllTransactions();
 
   @Insert(onConflict: OnConflictStrategy.replace)

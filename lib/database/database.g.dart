@@ -21,14 +21,12 @@ abstract class $BankDatabaseBuilderContract {
 class $FloorBankDatabase {
   /// Creates a database builder for a persistent database.
   /// Once a database is built, you should keep a reference to it and re-use it.
-  static $BankDatabaseBuilderContract databaseBuilder(String name) =>
-      _$BankDatabaseBuilder(name);
+  static $BankDatabaseBuilderContract databaseBuilder(String name) => _$BankDatabaseBuilder(name);
 
   /// Creates a database builder for an in memory database.
   /// Information stored in an in memory database disappears when the process is killed.
   /// Once a database is built, you should keep a reference to it and re-use it.
-  static $BankDatabaseBuilderContract inMemoryDatabaseBuilder() =>
-      _$BankDatabaseBuilder(null);
+  static $BankDatabaseBuilderContract inMemoryDatabaseBuilder() => _$BankDatabaseBuilder(null);
 }
 
 class _$BankDatabaseBuilder implements $BankDatabaseBuilderContract {
@@ -54,15 +52,9 @@ class _$BankDatabaseBuilder implements $BankDatabaseBuilderContract {
 
   @override
   Future<BankDatabase> build() async {
-    final path = name != null
-        ? await sqfliteDatabaseFactory.getDatabasePath(name!)
-        : ':memory:';
+    final path = name != null ? await sqfliteDatabaseFactory.getDatabasePath(name!) : ':memory:';
     final database = _$BankDatabase();
-    database.database = await database.open(
-      path,
-      _migrations,
-      _callback,
-    );
+    database.database = await database.open(path, _migrations, _callback);
     return database;
   }
 }
@@ -74,11 +66,7 @@ class _$BankDatabase extends BankDatabase {
 
   TransactionDao? _transactionDaoInstance;
 
-  Future<sqflite.Database> open(
-    String path,
-    List<Migration> migrations, [
-    Callback? callback,
-  ]) async {
+  Future<sqflite.Database> open(String path, List<Migration> migrations, [Callback? callback]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
       version: 1,
       onConfigure: (database) async {
@@ -89,14 +77,14 @@ class _$BankDatabase extends BankDatabase {
         await callback?.onOpen?.call(database);
       },
       onUpgrade: (database, startVersion, endVersion) async {
-        await MigrationAdapter.runMigrations(
-            database, startVersion, endVersion, migrations);
+        await MigrationAdapter.runMigrations(database, startVersion, endVersion, migrations);
 
         await callback?.onUpgrade?.call(database, startVersion, endVersion);
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `transactions` (`id` TEXT, `date` TEXT, `description` TEXT, `amount` REAL, `beneficiaryName` TEXT, `accountNumber` TEXT, PRIMARY KEY (`id`))');
+          'CREATE TABLE IF NOT EXISTS `transactions` (`id` TEXT, `date` TEXT, `description` TEXT, `amount` REAL, `beneficiaryName` TEXT, `accountNumber` TEXT, PRIMARY KEY (`id`))',
+        );
 
         await callback?.onCreate?.call(database, version);
       },
@@ -106,27 +94,25 @@ class _$BankDatabase extends BankDatabase {
 
   @override
   TransactionDao get transactionDao {
-    return _transactionDaoInstance ??=
-        _$TransactionDao(database, changeListener);
+    return _transactionDaoInstance ??= _$TransactionDao(database, changeListener);
   }
 }
 
 class _$TransactionDao extends TransactionDao {
-  _$TransactionDao(
-    this.database,
-    this.changeListener,
-  )   : _queryAdapter = QueryAdapter(database),
-        _transactionDataModelInsertionAdapter = InsertionAdapter(
-            database,
-            'transactions',
-            (TransactionDataModel item) => <String, Object?>{
-                  'id': item.id,
-                  'date': item.date,
-                  'description': item.description,
-                  'amount': item.amount,
-                  'beneficiaryName': item.beneficiaryName,
-                  'accountNumber': item.accountNumber
-                });
+  _$TransactionDao(this.database, this.changeListener)
+    : _queryAdapter = QueryAdapter(database),
+      _transactionDataModelInsertionAdapter = InsertionAdapter(
+        database,
+        'transactions',
+        (TransactionDataModel item) => <String, Object?>{
+          'id': item.id,
+          'date': item.date,
+          'description': item.description,
+          'amount': item.amount,
+          'beneficiaryName': item.beneficiaryName,
+          'accountNumber': item.accountNumber,
+        },
+      );
 
   final sqflite.DatabaseExecutor database;
 
@@ -134,31 +120,30 @@ class _$TransactionDao extends TransactionDao {
 
   final QueryAdapter _queryAdapter;
 
-  final InsertionAdapter<TransactionDataModel>
-      _transactionDataModelInsertionAdapter;
+  final InsertionAdapter<TransactionDataModel> _transactionDataModelInsertionAdapter;
 
   @override
   Future<List<TransactionDataModel>> getAllTransactions() async {
-    return _queryAdapter.queryList('SELECT * FROM AnnouncementClosed',
-        mapper: (Map<String, Object?> row) => TransactionDataModel(
-            id: row['id'] as String?,
-            date: row['date'] as String?,
-            description: row['description'] as String?,
-            amount: row['amount'] as double?,
-            beneficiaryName: row['beneficiaryName'] as String?,
-            accountNumber: row['accountNumber'] as String?));
+    return _queryAdapter.queryList(
+      'SELECT * FROM transactions',
+      mapper: (Map<String, Object?> row) => TransactionDataModel(
+        id: row['id'] as String?,
+        date: row['date'] as String?,
+        description: row['description'] as String?,
+        amount: row['amount'] as double?,
+        beneficiaryName: row['beneficiaryName'] as String?,
+        accountNumber: row['accountNumber'] as String?,
+      ),
+    );
   }
 
   @override
   Future<void> insertTransaction(TransactionDataModel transaction) async {
-    await _transactionDataModelInsertionAdapter.insert(
-        transaction, OnConflictStrategy.replace);
+    await _transactionDataModelInsertionAdapter.insert(transaction, OnConflictStrategy.replace);
   }
 
   @override
-  Future<void> updateTransaction(
-      List<TransactionDataModel> transactions) async {
-    await _transactionDataModelInsertionAdapter.insertList(
-        transactions, OnConflictStrategy.replace);
+  Future<void> updateTransaction(List<TransactionDataModel> transactions) async {
+    await _transactionDataModelInsertionAdapter.insertList(transactions, OnConflictStrategy.replace);
   }
 }

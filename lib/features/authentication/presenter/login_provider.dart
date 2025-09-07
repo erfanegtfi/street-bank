@@ -1,4 +1,4 @@
-import 'package:app_utils/response/data_response.dart';
+import 'package:app_data/model/data_response.dart';
 import 'package:app_utils/states/form_validation_state.dart';
 import 'package:app_utils/states/view_state.dart';
 import 'package:design_system/app_text.dart';
