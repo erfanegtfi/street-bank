@@ -2,6 +2,9 @@ class AppText {
   static const String appName = "Street Bank";
 
   static const String errorUnknown = "Unknown error!";
+  static const serverErrorConnectionTimeout = "Connection timeout!";
+  static const errorNetworkConnection = "Network connection error!";
+
   static const String accept = "Accept";
   static const String close = "Close";
 

@@ -3,7 +3,7 @@ import 'package:app_utils/states/form_validation_state.dart';
 import 'package:app_utils/states/view_state.dart';
 import 'package:design_system/app_text.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:street_bank/app/di/injector.dart';
+import 'package:street_bank/di/injector.dart';
 import 'package:street_bank/features/authentication/domain/usecase/login_form_validation_usecase.dart';
 import 'package:street_bank/features/authentication/domain/usecase/login_user_usecase.dart';
 import 'package:street_bank/features/authentication/domain/usecase/params/login_params.dart';
