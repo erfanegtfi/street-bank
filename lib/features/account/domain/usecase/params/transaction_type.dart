@@ -1,0 +1,1 @@
+enum TransactionTyoe { credit, debit }

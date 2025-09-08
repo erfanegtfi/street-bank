@@ -11,7 +11,7 @@ class TransactionListUsecase {
   Stream<DataResponse<List<Transaction>?>> call(RepositoryStrategy strategy) async* {
     if (strategy == RepositoryStrategy.offlineFirst) {
       yield DataResponse.success(await accountRepository.getAllTransactionsLocal());
-      await accountRepository.getAllTransactionsRemote();
+      yield await accountRepository.getAllTransactionsRemote();
       yield DataResponse.success(await accountRepository.getAllTransactionsLocal());
     } else if (strategy == RepositoryStrategy.offline)
       yield DataResponse.success(await accountRepository.getAllTransactionsLocal());

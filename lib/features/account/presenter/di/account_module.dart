@@ -6,6 +6,7 @@ import 'package:street_bank/features/account/data/data_source/remote/account_rem
 import 'package:street_bank/features/account/data/repository/account_repository.dart';
 import 'package:street_bank/features/account/domain/repositories/account_repository.dart';
 import 'package:street_bank/features/account/domain/usecase/get_account_balance_usecase.dart';
+import 'package:street_bank/features/account/domain/usecase/transaction_filter_list_usecase.dart';
 import 'package:street_bank/features/account/domain/usecase/transaction_list_usecase.dart';
 
 @module
@@ -21,4 +22,6 @@ abstract class AccountModule {
   TransactionListUsecase get transactionListUsecase => TransactionListUsecase(accountRepository: locator<AccountRepository>());
   @injectable
   GetAccountBalanceUsecase get getAccountBalanceUsecase => GetAccountBalanceUsecase(accountRepository: locator<AccountRepository>());
+  @injectable
+  TransactionFilterUsecase get transactionFilterUsecase => TransactionFilterUsecase(accountRepository: locator<AccountRepository>());
 }

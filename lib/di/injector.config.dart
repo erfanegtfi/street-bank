@@ -27,6 +27,8 @@ import '../features/account/domain/repositories/account_repository.dart'
     as _i457;
 import '../features/account/domain/usecase/get_account_balance_usecase.dart'
     as _i241;
+import '../features/account/domain/usecase/transaction_filter_list_usecase.dart'
+    as _i916;
 import '../features/account/domain/usecase/transaction_list_usecase.dart'
     as _i24;
 import '../features/account/presenter/di/account_module.dart' as _i637;
@@ -72,6 +74,8 @@ Future<_i174.GetIt> init(
       () => accountModule.transactionListUsecase);
   gh.factory<_i241.GetAccountBalanceUsecase>(
       () => accountModule.getAccountBalanceUsecase);
+  gh.factory<_i916.TransactionFilterUsecase>(
+      () => accountModule.transactionFilterUsecase);
   gh.factory<_i1062.LoginFormValidationUsecase>(
       () => _i1062.LoginFormValidationUsecase());
   gh.lazySingleton<_i17.NavigationService>(() => appModule.navigationService);
