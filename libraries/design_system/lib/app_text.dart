@@ -29,4 +29,5 @@ class AppText {
 
   static const String transactionScreenTitle = "Transaction";
   static const String transactionScreenItemNotFound = "Item not found";
+  static const String transactionScreenBeneficiary = "Beneficiary: ";
 }

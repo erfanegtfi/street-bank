@@ -96,7 +96,7 @@ class _$BankDatabase extends BankDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `transactions` (`id` TEXT, `date` TEXT, `description` TEXT, `amount` REAL, `beneficiaryName` TEXT, `accountNumber` TEXT, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `transactions` (`id` TEXT, `date` TEXT, `description` TEXT, `amount` REAL, `beneficiary_name` TEXT, `account_number` TEXT, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -124,8 +124,8 @@ class _$TransactionDao extends TransactionDao {
                   'date': item.date,
                   'description': item.description,
                   'amount': item.amount,
-                  'beneficiaryName': item.beneficiaryName,
-                  'accountNumber': item.accountNumber
+                  'beneficiary_name': item.beneficiaryName,
+                  'account_number': item.accountNumber
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -139,14 +139,15 @@ class _$TransactionDao extends TransactionDao {
 
   @override
   Future<List<TransactionDataModel>> getAllTransactions() async {
-    return _queryAdapter.queryList('SELECT * FROM transactions',
+    return _queryAdapter.queryList(
+        'SELECT * FROM transactions  ORDER BY date DESC',
         mapper: (Map<String, Object?> row) => TransactionDataModel(
             id: row['id'] as String?,
             date: row['date'] as String?,
             description: row['description'] as String?,
             amount: row['amount'] as double?,
-            beneficiaryName: row['beneficiaryName'] as String?,
-            accountNumber: row['accountNumber'] as String?));
+            beneficiaryName: row['beneficiary_name'] as String?,
+            accountNumber: row['account_number'] as String?));
   }
 
   @override

@@ -4,6 +4,7 @@ import 'package:app_data/model/data_response.dart';
 import 'package:app_data/model/list_response.dart';
 import 'package:app_data/remote/run_service.dart';
 import 'package:design_system/app_text.dart';
+import 'package:street_bank/features/account/data/data_source/local/account_local_storage_impl.dart';
 import 'package:street_bank/features/account/data/data_source/local/transaction_local_data_source.dart';
 import 'package:street_bank/features/account/data/data_source/remote/account_remote_data_source.dart';
 import 'package:street_bank/features/account/data/model/transaction_data_model.dart';
@@ -13,8 +14,13 @@ import 'package:street_bank/features/account/domain/repositories/account_reposit
 class AccountRepositoryImpl implements AccountRepository {
   final AccountRemoteDataSource accountRemoteDataSource;
   final TransactionsLocalDataSource transactionsLocalDataSource;
+  final AccountLocalStorage accountLocalStorage;
 
-  AccountRepositoryImpl({required this.accountRemoteDataSource, required this.transactionsLocalDataSource});
+  AccountRepositoryImpl({
+    required this.accountRemoteDataSource,
+    required this.transactionsLocalDataSource,
+    required this.accountLocalStorage,
+  });
 
   @override
   Future<DataResponse<List<Transaction>?>> getAllTransactionsRemote() async {
@@ -46,5 +52,15 @@ class AccountRepositoryImpl implements AccountRepository {
   Future<List<Transaction>?> getAllTransactionsLocal() async {
     List<TransactionDataModel> response = await transactionsLocalDataSource.getAllTransactions();
     return response.map((news) => news.toEntity()).toList();
+  }
+
+  @override
+  void setUserBalance(double balance) {
+    accountLocalStorage.setUserBalance(balance);
+  }
+
+  @override
+  double? getUserBalance() {
+    return accountLocalStorage.getUserBalance();
   }
 }

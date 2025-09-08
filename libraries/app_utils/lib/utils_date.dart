@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 class UtilsDate {
   static final String serverDateTimePattern = "yyyy-MM-dd'T'HH:mm:ssZ";
-  static final String appDateTimePattern = "yyyy-mm-dd HH:MM:ss";
+  static final String appDateTimePattern = "yyyy-MM-dd HH:MM:ss";
 
   static String formatDate(String? date) {
     if (date == null) return "";

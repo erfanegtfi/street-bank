@@ -1,3 +1,5 @@
+import 'package:app_utils/constants.dart';
+import 'package:app_utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:app_widgets/extentions.dart';
 import 'package:app_widgets/my_background_widget.dart';
@@ -8,7 +10,7 @@ import 'package:street_bank/features/dashboard/presenter/widgets/dashboard_butto
 import 'package:street_bank/navigation/navigation_service.dart';
 
 class HeaderBalance extends StatelessWidget {
-  final String balance;
+  final double balance;
   const HeaderBalance({required this.balance, super.key});
 
   @override
@@ -27,7 +29,10 @@ class HeaderBalance extends StatelessWidget {
           Column(
             children: [
               Text(AppText.homeScreenBalance, style: theme.textTheme.headlineLarge?.copyWith(color: appColors().white)),
-              Text(balance, style: theme.textTheme.headlineLarge?.copyWith(color: appColors().white)),
+              Text(
+                formatPriceWithTwoDecimals(balance) + Constants.currency,
+                style: theme.textTheme.headlineLarge?.copyWith(color: appColors().white),
+              ),
             ],
           ),
           Row(

@@ -8,6 +8,7 @@ import 'package:design_system/export_app_res.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:street_bank/features/account/domain/entities/transaction.dart';
+import 'package:street_bank/features/dashboard/presenter/providers/get_account_balance_provider.dart';
 import 'package:street_bank/features/dashboard/presenter/providers/transaction_list_provider.dart';
 import 'package:street_bank/features/dashboard/presenter/widgets/dashboard_header_balance_widget.dart';
 import 'package:street_bank/features/dashboard/presenter/widgets/transactions/transaction_header_widget.dart';
@@ -25,7 +26,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(dashboardTransactionListProvider.notifier).subscribeOnTransactions();
+      ref.read(dashboardTransactionListProvider.notifier).fetchTransactiopn();
+      ref.read(getAccountBalanceProvider.notifier).getAccountBalance();
     });
 
     super.initState();
@@ -40,16 +42,33 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     setup_dashboardTransactionListProvider_listeners();
+    setup_getAccountBalanceProvider_listeners();
     return MyScaffold(
       body: CustomScrollView(
         slivers: [
-          SliverToBoxAdapter(child: HeaderBalance(balance: "200")),
+          SliverToBoxAdapter(child: getHeaderBalance()),
           SliverToBoxAdapter(child: SizedBox(height: AppDimen.spacingNormal)),
           SliverToBoxAdapter(child: TransactionListHeader()),
           SliverToBoxAdapter(child: SizedBox(height: AppDimen.spacingNormal)),
           getTransactionList(),
         ],
       ),
+    );
+  }
+
+  Widget getHeaderBalance() {
+    return Consumer(
+      builder: (context, ref, __) {
+        final result = ref.watch(getAccountBalanceProvider);
+        return result.maybeWhen(
+          orElse: () => SizedBox(),
+          loading: () => Center(child: CircularProgressIndicator()),
+          success: (balance) {
+            return HeaderBalance(balance: balance);
+          },
+          error: (error) => getErrorWidget(error),
+        );
+      },
     );
   }
 
@@ -78,6 +97,12 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
   setup_dashboardTransactionListProvider_listeners() {
     ref.listen<ViewState<List<Transaction>>>(dashboardTransactionListProvider, (previous, next) {
+      next.maybeWhen(orElse: () {}, error: (error) {});
+    });
+  }
+
+  setup_getAccountBalanceProvider_listeners() {
+    ref.listen<ViewState<double>>(getAccountBalanceProvider, (previous, next) {
       next.maybeWhen(orElse: () {}, error: (error) {});
     });
   }

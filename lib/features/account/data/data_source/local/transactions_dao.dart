@@ -3,7 +3,7 @@ import 'package:street_bank/features/account/data/model/transaction_data_model.d
 
 @dao
 abstract class TransactionDao {
-  @Query('SELECT * FROM transactions')
+  @Query('SELECT * FROM transactions  ORDER BY date DESC')
   Future<List<TransactionDataModel>> getAllTransactions();
 
   @Insert(onConflict: OnConflictStrategy.replace)

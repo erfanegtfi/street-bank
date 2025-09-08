@@ -25,7 +25,7 @@ class DashboardTransactionListNotifier extends StateNotifier<ViewState<List<Tran
 
   DashboardTransactionListNotifier(this.transactionListUsecase, this.ref) : super(ViewState.init());
 
-  StreamSubscription<DataResponse<List<Transaction>?>> subscribeOnTransactions() {
+  StreamSubscription<DataResponse<List<Transaction>?>> fetchTransactiopn() {
     state = ViewState.loading();
     _subscription = transactionListUsecase(RepositoryStrategy.offlineFirst).listen((result) {
       result.when(

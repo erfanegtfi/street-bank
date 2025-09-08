@@ -1,3 +1,4 @@
+import 'package:app_utils/utils.dart';
 import 'package:app_utils/utils_date.dart';
 import 'package:app_widgets/extentions.dart';
 import 'package:app_widgets/my_background_widget.dart';
@@ -15,7 +16,7 @@ class TransactionHomeItem extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: AppDimen.spacingSmall),
       child: Row(
         children: [
-          SizedBox(width: 60, child: Text(transaction.amount.toString(), style: context.textTheme.titleSmall)),
+          SizedBox(width: 60, child: Text(formatPriceWithTwoDecimals(transaction.amount), style: context.textTheme.titleSmall)),
           SizedBox(width: AppDimen.spacingSmall),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

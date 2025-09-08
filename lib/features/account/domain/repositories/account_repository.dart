@@ -5,4 +5,6 @@ abstract class AccountRepository {
   Future<List<Transaction>?> getAllTransactionsLocal();
 
   Future<DataResponse<List<Transaction>?>> getAllTransactionsRemote();
+  double? getUserBalance();
+  setUserBalance(double balance);
 }

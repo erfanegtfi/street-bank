@@ -15,6 +15,8 @@ import 'package:injectable/injectable.dart' as _i526;
 import 'package:shared_preferences/shared_preferences.dart' as _i460;
 
 import '../database/database.dart' as _i660;
+import '../features/account/data/data_source/local/account_local_storage_impl.dart'
+    as _i416;
 import '../features/account/data/data_source/local/transaction_local_data_source.dart'
     as _i482;
 import '../features/account/data/data_source/remote/account_remote_data_source.dart'
@@ -23,6 +25,8 @@ import '../features/account/data/data_source/remote/account_rest_client.dart'
     as _i257;
 import '../features/account/domain/repositories/account_repository.dart'
     as _i457;
+import '../features/account/domain/usecase/get_account_balance_usecase.dart'
+    as _i241;
 import '../features/account/domain/usecase/transaction_list_usecase.dart'
     as _i24;
 import '../features/account/presenter/di/account_module.dart' as _i637;
@@ -64,13 +68,18 @@ Future<_i174.GetIt> init(
   gh.lazySingleton<_i562.LocalRepository>(() => appModule.userRepository);
   gh.lazySingleton<_i457.AccountRepository>(
       () => accountModule.accountRepository);
-  gh.factory<_i24.TransactionListUsecase>(() => accountModule.prefs);
+  gh.factory<_i24.TransactionListUsecase>(
+      () => accountModule.transactionListUsecase);
+  gh.factory<_i241.GetAccountBalanceUsecase>(
+      () => accountModule.getAccountBalanceUsecase);
   gh.factory<_i1062.LoginFormValidationUsecase>(
       () => _i1062.LoginFormValidationUsecase());
   gh.lazySingleton<_i17.NavigationService>(() => appModule.navigationService);
   gh.factory<_i482.TransactionsLocalDataSource>(() =>
       _i482.TransactionsLocalDataSourceImpl(
           database: gh<_i660.BankDatabase>()));
+  gh.factory<_i416.AccountLocalStorage>(
+      () => _i416.AccountLocalStorageImpl(gh<_i460.SharedPreferences>()));
   gh.factory<_i701.IsUserLoginUsecase>(
       () => _i701.IsUserLoginUsecase(gh<_i562.LocalRepository>()));
   gh.factory<_i364.LoginUserUsecase>(
