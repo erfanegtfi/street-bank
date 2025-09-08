@@ -1,5 +1,5 @@
-import 'package:app_data/local/local_repository.dart';
-import 'package:app_data/local/local_repository_impl.dart';
+import 'package:app_data/local/local_storage.dart';
+import 'package:app_data/local/local_storage_impl.dart';
 import 'package:app_data/remote/api_end_points.dart';
 import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,8 +23,8 @@ abstract class AppModule {
   Future<SharedPreferences> get prefs => SharedPreferences.getInstance();
 
   @LazySingleton(order: -1)
-  LocalRepository get userRepository {
-    return LocalRepositoryImpl(locator<SharedPreferences>());
+  LocalStorage get userRepository {
+    return LocalStorageImpl(locator<SharedPreferences>());
   }
 
   @LazySingleton(order: -3)

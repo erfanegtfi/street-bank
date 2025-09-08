@@ -1,7 +1,7 @@
-import 'package:app_data/local/local_repository.dart';
+import 'package:app_data/local/local_storage.dart';
 
 class IsUserLoginUsecase {
-  LocalRepository localRepository;
+  LocalStorage localRepository;
   IsUserLoginUsecase(this.localRepository);
 
   bool call() {

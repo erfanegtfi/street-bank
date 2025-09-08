@@ -1,11 +1,11 @@
-import 'package:app_data/local/local_repository.dart';
+import 'package:app_data/local/local_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LocalRepositoryImpl extends LocalRepository {
+class LocalStorageImpl extends LocalStorage {
   final SharedPreferences prefs;
   static const String userStatus = 'user_status';
 
-  LocalRepositoryImpl(this.prefs);
+  LocalStorageImpl(this.prefs);
 
   @override
   bool isUserLogin() {

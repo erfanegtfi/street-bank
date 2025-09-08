@@ -1,4 +1,4 @@
-abstract class LocalRepository {
+abstract class LocalStorage {
   bool isUserLogin();
   setUserStatus(bool status);
 }

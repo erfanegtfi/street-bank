@@ -17,6 +17,6 @@ class TransferFormValidationUsecase {
 
   bool _userHasEnoughBalance(TransferBalanceParams params) {
     double balance = accountLocalStorage.getUserBalance() ?? 0;
-    return (balance > params.amount.toDouble());
+    return (balance >= params.amount.toDouble());
   }
 }

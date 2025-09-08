@@ -46,7 +46,26 @@ final ThemeData lightTheme = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(foregroundColor: Colors.white, backgroundColor: lightColors.primary),
   ),
-
+  switchTheme: SwitchThemeData(
+    thumbColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return appColors().primary; // active thumb
+      }
+      return appColors().primary.withAlpha(100); // inactive thumb
+    }),
+    trackOutlineColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return appColors().primary.withAlpha(100); // active track
+      }
+      return appColors().primary.withAlpha(40); // inactive track
+    }),
+    trackColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return appColors().primary.withAlpha(100); // active track
+      }
+      return appColors().primary.withAlpha(40); // inactive track
+    }),
+  ),
   textTheme: TextTheme(
     displayLarge: textDisplayLarge.copyWith(color: lightColors.textBlack),
     displayMedium: textDisplayMedium.copyWith(color: lightColors.textBlack),
@@ -85,7 +104,20 @@ final ThemeData darkTheme = ThemeData(
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(foregroundColor: Colors.white, backgroundColor: darkColors.primary),
   ),
-
+  switchTheme: SwitchThemeData(
+    thumbColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return appColors().primary; // active thumb
+      }
+      return appColors().primary.withAlpha(100); // inactive thumb
+    }),
+    trackColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return appColors().gray; // active track
+      }
+      return appColors().primary.withAlpha(50); // inactive track
+    }),
+  ),
   textTheme: TextTheme(
     displayLarge: textDisplayLarge.copyWith(color: darkColors.textBlack),
     displayMedium: textDisplayMedium.copyWith(color: darkColors.textBlack),

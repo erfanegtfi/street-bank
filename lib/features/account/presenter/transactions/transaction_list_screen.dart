@@ -9,7 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:street_bank/features/account/domain/entities/transaction.dart';
 import 'package:street_bank/features/account/domain/usecase/params/transaction_filter_params.dart';
 import 'package:street_bank/features/account/presenter/transactions/item_transaction.dart';
-import 'package:street_bank/features/account/presenter/transactions/transaction_list_provider.dart';
+import 'package:street_bank/features/account/presenter/transactions/providers/transaction_list_provider.dart';
 import 'package:street_bank/features/account/presenter/transactions/widgets/search_bar_widget.dart';
 
 class TransactionListScreen extends ConsumerStatefulWidget {

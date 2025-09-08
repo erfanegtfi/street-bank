@@ -16,7 +16,7 @@ class TransactionHomeItem extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: AppDimen.spacingSmall),
       child: Row(
         children: [
-          SizedBox(width: 60, child: Text(formatPrice(transaction.amount), style: context.textTheme.titleSmall)),
+          SizedBox(width: 60, child: Text(formatPrice(transaction.amount.toString()), style: context.textTheme.titleSmall)),
           SizedBox(width: AppDimen.spacingSmall),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

@@ -8,7 +8,7 @@ class DarkColors implements MyColors {
   Color get appbarBackground => const Color(0xff1f2b4a);
 
   @override
-  Color get primary => const Color(0xff2b4fba);
+  Color get primary => const Color(0xff3563e8);
 
   @override
   Color get screenBackground => const Color(0xff1A2340); //

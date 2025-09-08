@@ -8,6 +8,7 @@ import 'package:street_bank/di/injector.dart';
 import 'package:street_bank/features/account/presenter/transactions/transaction_list_screen.dart';
 import 'package:street_bank/features/account/presenter/transfer/transfer_screen.dart';
 import 'package:street_bank/features/dashboard/presenter/widgets/dashboard_button_widget.dart';
+import 'package:street_bank/features/settings/settings_screen.dart';
 import 'package:street_bank/navigation/navigation_service.dart';
 
 class HeaderBalance extends StatelessWidget {
@@ -23,37 +24,57 @@ class HeaderBalance extends StatelessWidget {
       radius: 0,
       width: double.infinity,
       colorBack: Color(0xff456aef),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          SizedBox(),
-          Column(
-            children: [
-              Text(AppText.homeScreenBalance, style: theme.textTheme.headlineLarge?.copyWith(color: appColors().white)),
-              Text(formatPrice(balance) + Constants.currency, style: theme.textTheme.headlineLarge?.copyWith(color: appColors().white)),
-            ],
+      child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [getSettingButton(), getBalance(theme), getButtons()]),
+    );
+  }
+
+  Widget getSettingButton() {
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: AppDimen.spacingLarge),
+          child: IconButton(
+            onPressed: () {
+              locator<NavigationService>().push(SettingsScreen());
+            },
+            icon: Icon(Icons.settings, color: appColors().white),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              HeaderButton(
-                title: AppText.homeScreenTransactions,
-                icon: Icons.list_alt_rounded,
-                onPressed: () {
-                  locator<NavigationService>().push(TransactionListScreen());
-                },
-              ),
-              HeaderButton(
-                title: AppText.homeScreenTransfer,
-                icon: Icons.monetization_on,
-                onPressed: () {
-                  locator<NavigationService>().push(TransferScreen());
-                },
-              ),
-            ],
-          ),
-        ],
-      ),
+        ),
+      ],
+    );
+  }
+
+  Widget getBalance(ThemeData theme) {
+    return Column(
+      children: [
+        Text(AppText.homeScreenBalance, style: theme.textTheme.headlineLarge?.copyWith(color: appColors().white)),
+        Text(
+          formatPrice(balance.toString()) + Constants.currency,
+          style: theme.textTheme.headlineLarge?.copyWith(color: appColors().white),
+        ),
+      ],
+    );
+  }
+
+  Widget getButtons() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        HeaderButton(
+          title: AppText.homeScreenTransactions,
+          icon: Icons.list_alt_rounded,
+          onPressed: () {
+            locator<NavigationService>().push(TransactionListScreen());
+          },
+        ),
+        HeaderButton(
+          title: AppText.homeScreenTransfer,
+          icon: Icons.monetization_on,
+          onPressed: () {
+            locator<NavigationService>().push(TransferScreen());
+          },
+        ),
+      ],
     );
   }
 }

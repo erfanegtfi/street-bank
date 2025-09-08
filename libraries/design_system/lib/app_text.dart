@@ -45,4 +45,10 @@ class AppText {
   static const String transferBalanceScreenMessage = "You transferd %s to %s successfuly";
   static const String transferBalanceScreenConfirmTitle = "Confirm transfer";
   static const String transferBalanceScreenConfirmMessage = "Do you want to transfer %s to %s?";
+
+  static const String settingScreenTitle = "Settings";
+  static const String settingScreenToggleThemeSwitch = "Toggle theme to";
+  static const String settingScreenToggleBiometric = "Use Biometric";
+  static const String settingScreenThemeLight = "Light";
+  static const String settingScreenThemeDark = "Dark";
 }

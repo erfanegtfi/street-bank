@@ -11,8 +11,8 @@ import 'package:street_bank/features/account/domain/entities/transaction.dart';
 import 'package:street_bank/features/dashboard/presenter/providers/get_account_balance_provider.dart';
 import 'package:street_bank/features/dashboard/presenter/providers/transaction_list_provider.dart';
 import 'package:street_bank/features/dashboard/presenter/widgets/dashboard_header_balance_widget.dart';
-import 'package:street_bank/features/dashboard/presenter/widgets/transactions/transaction_header_widget.dart';
-import 'package:street_bank/features/dashboard/presenter/widgets/transaction_list.dart';
+import 'package:street_bank/features/dashboard/presenter/widgets/transaction_header_widget.dart';
+import 'package:street_bank/features/dashboard/presenter/widgets/transactions/transaction_list.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
