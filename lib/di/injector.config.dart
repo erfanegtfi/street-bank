@@ -31,6 +31,10 @@ import '../features/account/domain/usecase/transaction_filter_list_usecase.dart'
     as _i916;
 import '../features/account/domain/usecase/transaction_list_usecase.dart'
     as _i24;
+import '../features/account/domain/usecase/transfer_balance_usecase.dart'
+    as _i1056;
+import '../features/account/domain/usecase/transfer_form_validation_usecase.dart'
+    as _i867;
 import '../features/account/presenter/di/account_module.dart' as _i637;
 import '../features/authentication/domain/usecase/is_user_login_usecase.dart'
     as _i701;
@@ -76,6 +80,10 @@ Future<_i174.GetIt> init(
       () => accountModule.getAccountBalanceUsecase);
   gh.factory<_i916.TransactionFilterUsecase>(
       () => accountModule.transactionFilterUsecase);
+  gh.factory<_i1056.TransferBalanceUsecase>(
+      () => accountModule.transferBalanceUsecase);
+  gh.factory<_i867.TransferFormValidationUsecase>(
+      () => accountModule.transferFormValidationUsecase);
   gh.factory<_i1062.LoginFormValidationUsecase>(
       () => _i1062.LoginFormValidationUsecase());
   gh.lazySingleton<_i17.NavigationService>(() => appModule.navigationService);

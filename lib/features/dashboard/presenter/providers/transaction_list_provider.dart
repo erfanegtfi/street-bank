@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:app_data/model/data_response.dart';
+import 'package:app_data/remote/exception/network_connection_exception.dart';
 import 'package:app_data/repository_strategy.dart';
 import 'package:app_utils/constants.dart';
 import 'package:app_utils/states/view_state.dart';
@@ -19,33 +20,34 @@ final dashboardTransactionListProvider = StateNotifierProvider.autoDispose<Dashb
 
 class DashboardTransactionListNotifier extends StateNotifier<ViewState<List<Transaction>>> {
   final TransactionListUsecase transactionListUsecase;
-  late final StreamSubscription<DataResponse<List<Transaction>?>> _subscription;
-
+  StreamSubscription<DataResponse<List<Transaction>?>>? _subscription;
+  List<Transaction> transactions = [];
   final Ref ref;
 
   DashboardTransactionListNotifier(this.transactionListUsecase, this.ref) : super(ViewState.init());
 
-  StreamSubscription<DataResponse<List<Transaction>?>> fetchTransactiopn() {
+  void fetchTransactions() async {
     state = ViewState.loading();
+    await _subscription?.cancel();
     _subscription = transactionListUsecase(RepositoryStrategy.offlineFirst).listen((result) {
       result.when(
         success: (transactions) {
+          this.transactions = transactions ?? [];
           if ((transactions?.length ?? 0) >= Constants.homeTrasactionListCount)
             state = ViewState.success(transactions!.sublist(0, Constants.homeTrasactionListCount));
           else
             state = ViewState.success(transactions ?? []);
         },
         error: (error) {
-          state = ViewState.error(error);
+          if (!transactions.isNotEmpty && error.appException is NetworkConnectionException) state = ViewState.error(error);
         },
       );
     });
-    return _subscription;
   }
 
   @override
   void dispose() {
-    _subscription.cancel();
+    _subscription?.cancel();
     super.dispose();
   }
 }

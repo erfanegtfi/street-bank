@@ -1,10 +1,8 @@
 import 'package:app_utils/states/form_validation_state.dart';
 import 'package:design_system/app_text.dart';
 import 'package:app_utils/utils.dart';
-import 'package:injectable/injectable.dart';
 import 'package:street_bank/features/authentication/domain/usecase/params/login_params.dart';
 
-@injectable
 class LoginFormValidationUsecase {
   LoginFormValidationUsecase();
 

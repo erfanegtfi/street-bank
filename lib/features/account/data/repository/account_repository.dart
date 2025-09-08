@@ -10,6 +10,7 @@ import 'package:street_bank/features/account/data/data_source/remote/account_rem
 import 'package:street_bank/features/account/data/model/transaction_data_model.dart';
 import 'package:street_bank/features/account/domain/entities/transaction.dart';
 import 'package:street_bank/features/account/domain/repositories/account_repository.dart';
+import 'package:street_bank/features/account/domain/usecase/params/transfer_balance_params.dart';
 
 class AccountRepositoryImpl implements AccountRepository {
   final AccountRemoteDataSource accountRemoteDataSource;
@@ -62,5 +63,20 @@ class AccountRepositoryImpl implements AccountRepository {
   @override
   double? getUserBalance() {
     return accountLocalStorage.getUserBalance();
+  }
+
+  @override
+  Future<bool> addTransaction(TransferBalanceParams transaction) async {
+    var response = await transactionsLocalDataSource.insertTransaction(
+      TransactionDataModel(
+        id: transaction.id,
+        date: transaction.date,
+        description: transaction.description,
+        amount: transaction.amount,
+        beneficiaryName: transaction.beneficiaryName,
+        accountNumber: transaction.accountNumber,
+      ),
+    );
+    return true;
   }
 }

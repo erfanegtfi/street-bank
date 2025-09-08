@@ -9,9 +9,11 @@ import 'package:app_utils/validations/form_validators.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:design_system/export_app_res.dart';
 import 'package:app_widgets/extentions.dart';
+import 'package:street_bank/di/injector.dart';
 import 'package:street_bank/features/authentication/domain/usecase/params/login_params.dart';
 import 'package:street_bank/features/authentication/presenter/login_provider.dart';
 import 'package:street_bank/features/home/home_provider.dart';
+import 'package:street_bank/navigation/navigation_service.dart';
 
 import 'widgets/header_logo_widget.dart';
 
@@ -85,19 +87,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           orElse: () {
             return MyElevatedButton(AppText.loginScreenFormSubmitBotton, () {
               if (_formKey.currentState!.validate()) {
-                ref.read(loginProvider.notifier).loginValidateForm(getParam());
+                String email = _emailController.text.trim();
+                String password = _passwordController.text.trim();
+                ref.read(loginProvider.notifier).login(email: email, password: password);
               }
             });
           },
         );
       },
     );
-  }
-
-  LoginFormParam getParam() {
-    String email = _emailController.text.trim();
-    String password = _passwordController.text.trim();
-    return LoginFormParam(email: email, password: password);
   }
 
   setupLoginProviderListener() {
@@ -109,13 +107,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           ref.read(homeProvider.notifier).userLogedin();
         },
         formValidation: (validation) {
-          if (validation.valid)
-            ref.read(loginProvider.notifier).login(getParam());
-          else
-            context.showError(validation.errorMessage, () {});
+          if (!validation.valid) context.showError(validation.errorMessage, () => locator<NavigationService>().goBack());
         },
         error: (GeneralError error) {
-          context.showError(error.message, () {});
+          context.showError(error.message, () => locator<NavigationService>().goBack());
         },
       );
     });

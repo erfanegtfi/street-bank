@@ -12,4 +12,11 @@ class UtilsDate {
     String formattedDate = DateFormat(appDateTimePattern).format(dt);
     return formattedDate;
   }
+
+  static String getCurrentDate() {
+    final now = DateTime.now();
+    final formatter = DateFormat(serverDateTimePattern);
+    final formatted = formatter.format(now);
+    return formatted;
+  }
 }

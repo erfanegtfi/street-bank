@@ -23,12 +23,20 @@ class LoginNotifier extends StateNotifier<ViewState<String>> {
 
   LoginNotifier(this.loginFormValidationUsecase, this.loginUserUsecase, this.ref) : super(ViewState.init());
 
-  void loginValidateForm(LoginFormParam param) {
-    FormValidationState va = loginFormValidationUsecase.call(param);
+  FormValidationState _loginValidateForm({required String email, required String password}) {
+    FormValidationState va = loginFormValidationUsecase.call(getParam(email: email, password: password));
     state = ViewState.formValidation(va);
+    return va;
   }
 
-  void login(LoginFormParam param) async {
+  void login({required String email, required String password}) async {
+    state = ViewState.loading();
+
+    FormValidationState va = _loginValidateForm(email: email, password: password);
+    if (va.valid) _doLogin(getParam(email: email, password: password));
+  }
+
+  void _doLogin(LoginFormParam param) async {
     state = ViewState.loading();
     DataResponse<bool> result = loginUserUsecase(param);
     result.when(
@@ -39,5 +47,9 @@ class LoginNotifier extends StateNotifier<ViewState<String>> {
         state = ViewState.error(error);
       },
     );
+  }
+
+  LoginFormParam getParam({required String email, required String password}) {
+    return LoginFormParam(email: email, password: password);
   }
 }

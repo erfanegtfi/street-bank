@@ -6,6 +6,7 @@ import 'package:app_widgets/my_background_widget.dart';
 import 'package:design_system/export_app_res.dart';
 import 'package:street_bank/di/injector.dart';
 import 'package:street_bank/features/account/presenter/transactions/transaction_list_screen.dart';
+import 'package:street_bank/features/account/presenter/transfer/transfer_screen.dart';
 import 'package:street_bank/features/dashboard/presenter/widgets/dashboard_button_widget.dart';
 import 'package:street_bank/navigation/navigation_service.dart';
 
@@ -29,10 +30,7 @@ class HeaderBalance extends StatelessWidget {
           Column(
             children: [
               Text(AppText.homeScreenBalance, style: theme.textTheme.headlineLarge?.copyWith(color: appColors().white)),
-              Text(
-                formatPriceWithTwoDecimals(balance) + Constants.currency,
-                style: theme.textTheme.headlineLarge?.copyWith(color: appColors().white),
-              ),
+              Text(formatPrice(balance) + Constants.currency, style: theme.textTheme.headlineLarge?.copyWith(color: appColors().white)),
             ],
           ),
           Row(
@@ -45,7 +43,13 @@ class HeaderBalance extends StatelessWidget {
                   locator<NavigationService>().push(TransactionListScreen());
                 },
               ),
-              HeaderButton(title: AppText.homeScreenTransfer, icon: Icons.monetization_on, onPressed: () {}),
+              HeaderButton(
+                title: AppText.homeScreenTransfer,
+                icon: Icons.monetization_on,
+                onPressed: () {
+                  locator<NavigationService>().push(TransferScreen());
+                },
+              ),
             ],
           ),
         ],

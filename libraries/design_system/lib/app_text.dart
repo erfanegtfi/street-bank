@@ -6,6 +6,8 @@ class AppText {
   static const errorNetworkConnection = "Network connection error!";
 
   static const String accept = "Accept";
+  static const String confirm = "Confirm";
+  static const String cancel = "Cancel";
   static const String close = "Close";
 
   static const String validatorEmpty = "Please fill this field";
@@ -30,4 +32,17 @@ class AppText {
   static const String transactionScreenTitle = "Transaction";
   static const String transactionScreenItemNotFound = "Item not found";
   static const String transactionScreenBeneficiary = "Beneficiary: ";
+  static const String transactionScreenDescription = "Description: ";
+
+  static const String transferBalanceScreenTitle = "Transfer";
+  static const String transferBalanceScreenDescription = "You can transfer your balance to all accounts";
+  static const String transferBalanceScreenSubmit = "Transfer";
+  static const String transferBalanceScreenAmount = "Amount";
+  static const String transferBalanceScreenAccountNumber = "Account number";
+  static const String transferBalanceScreenBeneficiary = "Beneficiary name";
+  static const String transferBalanceScreenInvalidAmount = "Invalid amount!";
+  static const String transferBalanceScreenInsafficientBalance = "Insufficient Balance!";
+  static const String transferBalanceScreenMessage = "You transferd %s to %s successfuly";
+  static const String transferBalanceScreenConfirmTitle = "Confirm transfer";
+  static const String transferBalanceScreenConfirmMessage = "Do you want to transfer %s to %s?";
 }

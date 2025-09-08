@@ -1,5 +1,4 @@
 import 'package:app_data/model/data_response.dart';
-import 'package:app_data/repository_strategy.dart';
 import 'package:street_bank/features/account/domain/entities/transaction.dart';
 import 'package:street_bank/features/account/domain/repositories/account_repository.dart';
 
@@ -10,20 +9,27 @@ class GetAccountBalanceUsecase {
 
   Future<double> call() async {
     double? balance = accountRepository.getUserBalance();
-    if (balance == null) {
-      DataResponse<List<Transaction>?> response = await accountRepository.getAllTransactionsRemote();
-      response.when(
-        success: (transactions) {
-          double sum = 0;
-          for (Transaction tran in transactions ?? []) {
-            sum += tran.amount ?? 0;
-          }
-          accountRepository.setUserBalance(sum);
-        },
-        error: (error) {},
-      );
+    balance ??= await getWalletBalanceFromRemoteTransaction();
+
+    return balance;
+  }
+
+  Future<double> getWalletBalanceFromRemoteTransaction() async {
+    DataResponse<List<Transaction>?> response = await accountRepository.getAllTransactionsRemote();
+    response.when(
+      success: (transactions) {
+        accountRepository.setUserBalance(_getTotalCount(transactions));
+      },
+      error: (error) {},
+    );
+    return accountRepository.getUserBalance() ?? 0;
+  }
+
+  double _getTotalCount(List<Transaction>? transactions) {
+    double sum = 0;
+    for (Transaction tran in transactions ?? []) {
+      sum += tran.amount ?? 0;
     }
-    balance = accountRepository.getUserBalance();
-    return balance ?? 0;
+    return sum;
   }
 }

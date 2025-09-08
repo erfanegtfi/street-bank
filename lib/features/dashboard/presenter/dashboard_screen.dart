@@ -26,7 +26,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(dashboardTransactionListProvider.notifier).fetchTransactiopn();
+      ref.read(dashboardTransactionListProvider.notifier).fetchTransactions();
       ref.read(getAccountBalanceProvider.notifier).getAccountBalance();
     });
 

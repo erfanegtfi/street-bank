@@ -16,12 +16,12 @@ class TransactionItem extends StatelessWidget {
       margin: EdgeInsets.symmetric(vertical: AppDimen.spacingSmall),
       child: Row(
         children: [
-          SizedBox(width: 60, child: Text(formatPriceWithTwoDecimals(transaction.amount), style: context.textTheme.titleSmall)),
+          SizedBox(width: 60, child: Text(formatPrice(transaction.amount), style: context.textTheme.titleSmall)),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(AppText.transactionScreenBeneficiary + (transaction.beneficiaryName ?? "")),
-              Text(transaction.description ?? ""),
+              Text(AppText.transactionScreenDescription + (transaction.description ?? "")),
               Text(UtilsDate.formatDate(transaction.date), style: context.textTheme.labelMedium),
             ],
           ),

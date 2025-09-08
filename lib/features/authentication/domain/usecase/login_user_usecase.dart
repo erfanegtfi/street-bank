@@ -3,10 +3,8 @@ import 'package:app_data/local/local_repository.dart';
 import 'package:app_data/model/data_response.dart';
 import 'package:design_system/app_text.dart';
 import 'package:app_utils/constants.dart';
-import 'package:injectable/injectable.dart';
 import 'package:street_bank/features/authentication/domain/usecase/params/login_params.dart';
 
-@injectable
 class LoginUserUsecase {
   LocalRepository localRepository;
   LoginUserUsecase(this.localRepository);

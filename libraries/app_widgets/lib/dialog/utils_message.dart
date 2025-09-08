@@ -48,16 +48,11 @@ void showFlushbar({required BuildContext context, required String title, Color? 
               SizedBox(height: AppDimen.spacingNormal),
               Row(
                 children: [
-                  Expanded(
-                    child: Text(
-                      title,
-                      textDirection: TextDirection.rtl,
-                      textAlign: TextAlign.right,
-                      style: TextStyle(color: Colors.white, fontSize: 14),
-                    ),
-                  ),
-                  SizedBox(width: 10),
                   Icon(Icons.info, color: Colors.white),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Text(title, style: TextStyle(color: Colors.white, fontSize: 14)),
+                  ),
                 ],
               ),
               SizedBox(height: AppDimen.spacingNormal),
@@ -71,6 +66,6 @@ void showFlushbar({required BuildContext context, required String title, Color? 
 
   overlay.insert(overlayEntry);
 
-  // Automatically remove the flush bar after 3 seconds
+  // Automatically remove the flush bar after 4 seconds
   Future.delayed(Duration(seconds: 4)).then((_) => overlayEntry.remove());
 }

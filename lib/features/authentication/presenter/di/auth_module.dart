@@ -1,0 +1,16 @@
+import 'package:app_data/local/local_repository.dart';
+import 'package:injectable/injectable.dart';
+import 'package:street_bank/di/injector.dart';
+import 'package:street_bank/features/authentication/domain/usecase/is_user_login_usecase.dart';
+import 'package:street_bank/features/authentication/domain/usecase/login_form_validation_usecase.dart';
+import 'package:street_bank/features/authentication/domain/usecase/login_user_usecase.dart';
+
+@module
+abstract class AccountModule {
+  @injectable
+  LoginUserUsecase get loginUserUsecase => LoginUserUsecase(locator<LocalRepository>());
+  @injectable
+  LoginFormValidationUsecase get loginFormValidationUsecase => LoginFormValidationUsecase();
+  @injectable
+  IsUserLoginUsecase get isUserLoginUsecase => IsUserLoginUsecase(locator<LocalRepository>());
+}
