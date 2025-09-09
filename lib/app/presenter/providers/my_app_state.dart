@@ -1,4 +1,4 @@
-import 'package:street_bank/app/data/model/app_settings.dart';
+import 'package:street_bank/app/domain/entities/app_settings.dart';
 
 abstract class MyAppState {
   final AppSettings appSettings;

@@ -1,12 +1,8 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:street_bank/app/data/model/app_settings.dart';
-import 'package:street_bank/app/domain/params/setting_params.dart';
-
-abstract class AppSettingStorage {
-  saveSetting(SettingParam setting);
-  AppSettings getSetting();
-}
+import 'package:street_bank/app/domain/entities/app_settings.dart';
+import 'package:street_bank/app/domain/repository/app_setting_storage.dart';
+import 'package:street_bank/app/domain/usecase/params/setting_params.dart';
 
 class AppSettingStorageImpl extends AppSettingStorage {
   final SharedPreferences prefs;

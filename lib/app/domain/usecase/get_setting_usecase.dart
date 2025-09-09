@@ -1,5 +1,5 @@
-import 'package:street_bank/app/data/app_setting_storage_impl.dart';
-import 'package:street_bank/app/data/model/app_settings.dart';
+import 'package:street_bank/app/domain/entities/app_settings.dart';
+import 'package:street_bank/app/domain/repository/app_setting_storage.dart';
 
 class GetSettingUsecase {
   AppSettingStorage appSettingStorage;

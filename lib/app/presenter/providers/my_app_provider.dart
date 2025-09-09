@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:street_bank/app/data/model/app_settings.dart';
-import 'package:street_bank/app/domain/get_setting_usecase.dart';
-import 'package:street_bank/app/domain/params/setting_params.dart';
-import 'package:street_bank/app/domain/update_setting_usecase.dart';
+import 'package:street_bank/app/domain/entities/app_settings.dart';
+import 'package:street_bank/app/domain/usecase/get_setting_usecase.dart';
+import 'package:street_bank/app/domain/usecase/params/setting_params.dart';
+import 'package:street_bank/app/domain/usecase/update_setting_usecase.dart';
 import 'package:street_bank/app/presenter/providers/my_app_state.dart';
 import 'package:street_bank/di/injector.dart';
 

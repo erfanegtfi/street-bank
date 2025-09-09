@@ -1,7 +1,8 @@
 import 'package:injectable/injectable.dart';
 import 'package:street_bank/app/data/app_setting_storage_impl.dart';
-import 'package:street_bank/app/domain/get_setting_usecase.dart';
-import 'package:street_bank/app/domain/update_setting_usecase.dart';
+import 'package:street_bank/app/domain/repository/app_setting_storage.dart';
+import 'package:street_bank/app/domain/usecase/get_setting_usecase.dart';
+import 'package:street_bank/app/domain/usecase/update_setting_usecase.dart';
 import 'package:street_bank/di/injector.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
