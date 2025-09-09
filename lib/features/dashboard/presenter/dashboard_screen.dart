@@ -7,6 +7,7 @@ import 'package:app_widgets/my_scaffold.dart';
 import 'package:design_system/export_app_res.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:street_bank/di/injector.dart';
 import 'package:street_bank/features/account/domain/entities/transaction.dart';
 import 'package:street_bank/features/dashboard/presenter/providers/get_account_balance_provider.dart';
@@ -25,13 +26,19 @@ class DashboardScreen extends ConsumerStatefulWidget {
 
 class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   late ThemeData theme;
+  DashboardTransactionListNotifier? dashboardTransactionListNotifier;
+
   @override
   void initState() {
+    dashboardTransactionListNotifier = ref.read(dashboardTransactionListProvider.notifier);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(dashboardTransactionListProvider.notifier).fetchTransactions();
+      dashboardTransactionListNotifier?.fetchTransactions();
       ref.read(getAccountBalanceProvider.notifier).getAccountBalance();
     });
-
+    dashboardTransactionListNotifier?.errorPublisher.distinct().debounceTime(Duration(seconds: 2)).listen((error) {
+      if (mounted) context.showError(error.message, () => locator<NavigationService>().goBack());
+    });
     super.initState();
   }
 

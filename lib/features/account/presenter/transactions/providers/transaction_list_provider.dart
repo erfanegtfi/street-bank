@@ -22,7 +22,6 @@ class TransactionListNotifier extends StateNotifier<ViewState<List<Transaction>>
   final TransactionListUsecase transactionListUsecase;
   final TransactionFilterUsecase transactionFilterUsecase;
   StreamSubscription<DataResponse<List<Transaction>?>>? _subscription;
-
   final Ref ref;
   List<Transaction> transactions = [];
 
