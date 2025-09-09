@@ -33,7 +33,7 @@ class AccountRepositoryImpl implements AccountRepository {
         if (response.result != null && response.result?.isNotEmpty == true) {
           transactionsLocalDataSource.insertTransactions(response.result!);
 
-          return DataResponse.success(response.result?.map((news) => news.toEntity()).toList());
+          return DataResponse.success(response.result?.map((trans) => trans.toEntity()).toList());
         } else {
           return DataResponse.success(List.empty());
         }
@@ -52,7 +52,7 @@ class AccountRepositoryImpl implements AccountRepository {
   @override
   Future<List<Transaction>?> getAllTransactionsLocal() async {
     List<TransactionDataModel> response = await transactionsLocalDataSource.getAllTransactions();
-    return response.map((news) => news.toEntity()).toList();
+    return response.map((trans) => trans.toEntity()).toList();
   }
 
   @override
