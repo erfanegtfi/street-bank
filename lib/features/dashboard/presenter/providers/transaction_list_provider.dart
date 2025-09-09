@@ -39,7 +39,8 @@ class DashboardTransactionListNotifier extends StateNotifier<ViewState<List<Tran
             state = ViewState.success(transactions ?? []);
         },
         error: (error) {
-          if (!transactions.isNotEmpty && error.appException is NetworkConnectionException) state = ViewState.error(error);
+          //  && error.appException is NetworkConnectionException
+          if (transactions.isEmpty) state = ViewState.error(error);
         },
       );
     });

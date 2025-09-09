@@ -7,12 +7,14 @@ import 'package:app_widgets/my_scaffold.dart';
 import 'package:design_system/export_app_res.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:street_bank/di/injector.dart';
 import 'package:street_bank/features/account/domain/entities/transaction.dart';
 import 'package:street_bank/features/dashboard/presenter/providers/get_account_balance_provider.dart';
 import 'package:street_bank/features/dashboard/presenter/providers/transaction_list_provider.dart';
 import 'package:street_bank/features/dashboard/presenter/widgets/dashboard_header_balance_widget.dart';
 import 'package:street_bank/features/dashboard/presenter/widgets/transaction_header_widget.dart';
 import 'package:street_bank/features/dashboard/presenter/widgets/transactions/transaction_list.dart';
+import 'package:street_bank/navigation/navigation_service.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
@@ -62,7 +64,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         final result = ref.watch(getAccountBalanceProvider);
         return result.maybeWhen(
           orElse: () => SizedBox(),
-          loading: () => Center(child: CircularProgressIndicator()),
+          loading: () => SizedBox(height: 200, child: Center(child: CircularProgressIndicator())),
           success: (balance) {
             return HeaderBalance(balance: balance);
           },
@@ -97,7 +99,12 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
   setup_dashboardTransactionListProvider_listeners() {
     ref.listen<ViewState<List<Transaction>>>(dashboardTransactionListProvider, (previous, next) {
-      next.maybeWhen(orElse: () {}, error: (error) {});
+      next.maybeWhen(
+        orElse: () {},
+        error: (error) {
+          context.showError(error.message, () => locator<NavigationService>().goBack());
+        },
+      );
     });
   }
 

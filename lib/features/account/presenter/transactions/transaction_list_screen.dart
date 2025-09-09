@@ -42,12 +42,18 @@ class _TransactionListScreenState extends ConsumerState<TransactionListScreen> {
   Widget getBody() {
     return Column(
       children: [
+        SizedBox(height: AppDimen.spacingNormal),
         SearchBarWidget(
           onTextChanged: (text) {
             params.name = text;
             ref.watch(transactionListProvider.notifier).filterList(params);
           },
+          onFilter: (transactionType) {
+            params.type = transactionType;
+            ref.watch(transactionListProvider.notifier).filterList(params);
+          },
         ),
+        SizedBox(height: AppDimen.spacingNormal),
         Expanded(
           child: Consumer(
             builder: (context, ref, __) {

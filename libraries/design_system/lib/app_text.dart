@@ -33,6 +33,10 @@ class AppText {
   static const String transactionScreenItemNotFound = "Item not found";
   static const String transactionScreenBeneficiary = "Beneficiary: ";
   static const String transactionScreenDescription = "Description: ";
+  static const String transactionScreenSearch = "Search name or description";
+  static const String transactionScreenCredit = "Credit";
+  static const String transactionScreenDebit = "Debit";
+  static const String transactionScreenAll = "All";
 
   static const String transferBalanceScreenTitle = "Transfer";
   static const String transferBalanceScreenDescription = "You can transfer your balance to all accounts";

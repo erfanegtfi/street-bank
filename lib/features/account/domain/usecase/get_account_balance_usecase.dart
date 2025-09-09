@@ -18,14 +18,15 @@ class GetAccountBalanceUsecase {
     DataResponse<List<Transaction>?> response = await accountRepository.getAllTransactionsRemote();
     response.when(
       success: (transactions) {
-        accountRepository.setUserBalance(_getTotalCount(transactions));
+        accountRepository.setUserBalance(_getTotalBalance(transactions));
       },
       error: (error) {},
     );
     return accountRepository.getUserBalance() ?? 0;
   }
 
-  double _getTotalCount(List<Transaction>? transactions) {
+  // get account balance
+  double _getTotalBalance(List<Transaction>? transactions) {
     double sum = 0;
     for (Transaction tran in transactions ?? []) {
       sum += tran.amount ?? 0;
