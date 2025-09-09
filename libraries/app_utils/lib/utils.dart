@@ -20,15 +20,13 @@ String formatPrice(String price) {
   value = value.abs();
 
   // Check if number has decimals
-  bool hasDecimals = value % 1 != 0;
+  bool hasDecimals = price.contains('.');
 
-  String numStr = hasDecimals
-      ? value.toStringAsFixed(2) // keep 2 decimals
-      : value.toStringAsFixed(0); // no decimals
+  String numStr = value.toString(); // no decimals
 
   List<String> parts = numStr.split('.');
   String integerPart = parts[0];
-  String decimalPart = parts.length > 1 ? parts[1] : "";
+  String decimalPart = parts.length > 1 ? (parts[1].length > 1 ? parts[1].substring(0, 2) : parts[1]) : "";
 
   // Add commas to integer part
   StringBuffer buffer = StringBuffer();
