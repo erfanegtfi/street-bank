@@ -8,7 +8,7 @@ import 'package:street_bank/di/injector.dart';
 import 'package:street_bank/features/account/presenter/transactions/transaction_list_screen.dart';
 import 'package:street_bank/features/account/presenter/transfer/transfer_screen.dart';
 import 'package:street_bank/features/dashboard/presenter/widgets/dashboard_button_widget.dart';
-import 'package:street_bank/features/settings/settings_screen.dart';
+import 'package:street_bank/features/settings/presenter/settings_screen.dart';
 import 'package:street_bank/navigation/navigation_service.dart';
 
 class HeaderBalance extends StatelessWidget {
