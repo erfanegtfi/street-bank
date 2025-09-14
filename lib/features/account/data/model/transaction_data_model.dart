@@ -1,4 +1,4 @@
-import 'package:floor/floor.dart';
+import 'package:froom/froom.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:street_bank/features/account/domain/entities/transaction.dart';
 part 'transaction_data_model.g.dart';

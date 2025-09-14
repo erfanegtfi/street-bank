@@ -17,7 +17,7 @@ dependencies:
   app_data:
     path: ../app_data
 
-  freezed: ^2.5.7
+  freezed: ^3.2.3
   intl: ^0.20.1
   uuid: ^4.5.1
 
@@ -25,7 +25,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-  build_runner: ^2.4.13
+  build_runner: ^2.7.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

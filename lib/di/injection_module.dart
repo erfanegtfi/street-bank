@@ -35,7 +35,7 @@ abstract class AppModule {
   @preResolve
   @LazySingleton(order: -3)
   Future<BankDatabase> initDatabase() async {
-    final database = await $FloorBankDatabase.databaseBuilder('bank_database.db').addMigrations([]).build();
+    final database = await $FroomBankDatabase.databaseBuilder('bank_database.db').addMigrations([]).build();
 
     return database;
   }

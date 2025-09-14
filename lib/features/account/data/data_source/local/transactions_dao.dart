@@ -1,4 +1,4 @@
-import 'package:floor/floor.dart';
+import 'package:froom/froom.dart';
 import 'package:street_bank/features/account/data/model/transaction_data_model.dart';
 
 @dao

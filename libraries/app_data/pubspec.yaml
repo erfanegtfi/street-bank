@@ -15,20 +15,21 @@ dependencies:
     path: ../design_system
 
   shared_preferences: 2.3.3
-  retrofit: ^4.4.1
+  retrofit: ^4.7.2
   json_annotation: ^4.9.0
-  freezed_annotation: ^2.4.4
-  freezed: ^2.5.7
-  floor: ^1.5.0
+  freezed_annotation: ^3.1.0
+  freezed: ^3.2.3
+  froom: ^3.0.2
+  sqflite: ^2.4.2
   connectivity_plus: ^6.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-  retrofit_generator: ^9.1.5
+  retrofit_generator: ^10.0.5
   json_serializable: ^6.9.0
-  floor_generator: ^1.5.0
+  froom_generator: ^3.0.2
 
 
 # For information on the generic Dart part of this file, see the

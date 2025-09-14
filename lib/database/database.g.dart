@@ -3,7 +3,7 @@
 part of 'database.dart';
 
 // **************************************************************************
-// FloorGenerator
+// FroomGenerator
 // **************************************************************************
 
 abstract class $BankDatabaseBuilderContract {
@@ -18,7 +18,7 @@ abstract class $BankDatabaseBuilderContract {
 }
 
 // ignore: avoid_classes_with_only_static_members
-class $FloorBankDatabase {
+class $FroomBankDatabase {
   /// Creates a database builder for a persistent database.
   /// Once a database is built, you should keep a reference to it and re-use it.
   static $BankDatabaseBuilderContract databaseBuilder(String name) =>
@@ -58,11 +58,7 @@ class _$BankDatabaseBuilder implements $BankDatabaseBuilderContract {
         ? await sqfliteDatabaseFactory.getDatabasePath(name!)
         : ':memory:';
     final database = _$BankDatabase();
-    database.database = await database.open(
-      path,
-      _migrations,
-      _callback,
-    );
+    database.database = await database.open(path, _migrations, _callback);
     return database;
   }
 }
@@ -90,13 +86,18 @@ class _$BankDatabase extends BankDatabase {
       },
       onUpgrade: (database, startVersion, endVersion) async {
         await MigrationAdapter.runMigrations(
-            database, startVersion, endVersion, migrations);
+          database,
+          startVersion,
+          endVersion,
+          migrations,
+        );
 
         await callback?.onUpgrade?.call(database, startVersion, endVersion);
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `transactions` (`id` TEXT, `date` TEXT, `description` TEXT, `amount` REAL, `beneficiary_name` TEXT, `account_number` TEXT, PRIMARY KEY (`id`))');
+          'CREATE TABLE IF NOT EXISTS `transactions` (`id` TEXT, `date` TEXT, `description` TEXT, `amount` REAL, `beneficiary_name` TEXT, `account_number` TEXT, PRIMARY KEY (`id`))',
+        );
 
         await callback?.onCreate?.call(database, version);
       },
@@ -106,27 +107,28 @@ class _$BankDatabase extends BankDatabase {
 
   @override
   TransactionDao get transactionDao {
-    return _transactionDaoInstance ??=
-        _$TransactionDao(database, changeListener);
+    return _transactionDaoInstance ??= _$TransactionDao(
+      database,
+      changeListener,
+    );
   }
 }
 
 class _$TransactionDao extends TransactionDao {
-  _$TransactionDao(
-    this.database,
-    this.changeListener,
-  )   : _queryAdapter = QueryAdapter(database),
-        _transactionDataModelInsertionAdapter = InsertionAdapter(
-            database,
-            'transactions',
-            (TransactionDataModel item) => <String, Object?>{
-                  'id': item.id,
-                  'date': item.date,
-                  'description': item.description,
-                  'amount': item.amount,
-                  'beneficiary_name': item.beneficiaryName,
-                  'account_number': item.accountNumber
-                });
+  _$TransactionDao(this.database, this.changeListener)
+    : _queryAdapter = QueryAdapter(database),
+      _transactionDataModelInsertionAdapter = InsertionAdapter(
+        database,
+        'transactions',
+        (TransactionDataModel item) => <String, Object?>{
+          'id': item.id,
+          'date': item.date,
+          'description': item.description,
+          'amount': item.amount,
+          'beneficiary_name': item.beneficiaryName,
+          'account_number': item.accountNumber,
+        },
+      );
 
   final sqflite.DatabaseExecutor database;
 
@@ -135,31 +137,38 @@ class _$TransactionDao extends TransactionDao {
   final QueryAdapter _queryAdapter;
 
   final InsertionAdapter<TransactionDataModel>
-      _transactionDataModelInsertionAdapter;
+  _transactionDataModelInsertionAdapter;
 
   @override
   Future<List<TransactionDataModel>> getAllTransactions() async {
     return _queryAdapter.queryList(
-        'SELECT * FROM transactions  ORDER BY date DESC',
-        mapper: (Map<String, Object?> row) => TransactionDataModel(
-            id: row['id'] as String?,
-            date: row['date'] as String?,
-            description: row['description'] as String?,
-            amount: row['amount'] as double?,
-            beneficiaryName: row['beneficiary_name'] as String?,
-            accountNumber: row['account_number'] as String?));
+      'SELECT * FROM transactions  ORDER BY date DESC',
+      mapper: (Map<String, Object?> row) => TransactionDataModel(
+        id: row['id'] as String?,
+        date: row['date'] as String?,
+        description: row['description'] as String?,
+        amount: row['amount'] as double?,
+        beneficiaryName: row['beneficiary_name'] as String?,
+        accountNumber: row['account_number'] as String?,
+      ),
+    );
   }
 
   @override
   Future<void> insertTransaction(TransactionDataModel transaction) async {
     await _transactionDataModelInsertionAdapter.insert(
-        transaction, OnConflictStrategy.replace);
+      transaction,
+      OnConflictStrategy.replace,
+    );
   }
 
   @override
   Future<void> updateTransaction(
-      List<TransactionDataModel> transactions) async {
+    List<TransactionDataModel> transactions,
+  ) async {
     await _transactionDataModelInsertionAdapter.insertList(
-        transactions, OnConflictStrategy.replace);
+      transactions,
+      OnConflictStrategy.replace,
+    );
   }
 }
