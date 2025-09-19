@@ -23,6 +23,5 @@ class TransactionListHeader extends StatelessWidget {
         ],
       ),
     );
-    ;
   }
 }

@@ -12,7 +12,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:design_system/export_app_res.dart';
 import 'package:app_widgets/extentions.dart';
-import 'package:street_bank/app/presenter/providers/my_app_provider.dart';
 import 'package:street_bank/di/injector.dart';
 import 'package:street_bank/features/account/presenter/transfer/transfer_provider.dart';
 import 'package:street_bank/navigation/navigation_service.dart';

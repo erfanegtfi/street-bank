@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:app_data/general_error.dart';
 import 'package:app_data/model/data_response.dart';
-import 'package:app_data/remote/exception/network_connection_exception.dart';
 import 'package:app_data/repository_strategy.dart';
 import 'package:app_utils/constants.dart';
 import 'package:app_utils/states/view_state.dart';

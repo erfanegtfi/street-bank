@@ -10,7 +10,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:design_system/export_app_res.dart';
 import 'package:app_widgets/extentions.dart';
 import 'package:street_bank/di/injector.dart';
-import 'package:street_bank/features/authentication/domain/usecase/params/login_params.dart';
 import 'package:street_bank/features/authentication/presenter/login_provider.dart';
 import 'package:street_bank/features/home/home_provider.dart';
 import 'package:street_bank/navigation/navigation_service.dart';

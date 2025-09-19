@@ -17,13 +17,15 @@ class TransactionItem extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(width: 60, child: Text(formatPrice(transaction.amount.toString()), style: context.textTheme.titleSmall)),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(AppText.transactionScreenBeneficiary + (transaction.beneficiaryName ?? "")),
-              Text(AppText.transactionScreenDescription + (transaction.description ?? "")),
-              Text(UtilsDate.formatDate(transaction.date), style: context.textTheme.labelMedium),
-            ],
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(AppText.transactionScreenBeneficiary + (transaction.beneficiaryName ?? "")),
+                Text(AppText.transactionScreenDescription + (transaction.description ?? "")),
+                Text(UtilsDate.formatDate(transaction.date), style: context.textTheme.labelMedium),
+              ],
+            ),
           ),
         ],
       ),
