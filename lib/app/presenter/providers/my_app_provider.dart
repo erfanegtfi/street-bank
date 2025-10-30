@@ -23,7 +23,7 @@ class MyAppSettingsNotifier extends StateNotifier<MyAppState> {
   MyAppSettingsNotifier(this.ref, this.updateSettingUsecase, this.getSettingUsecase)
     : super(InitialState(appSettings: getSettingUsecase()));
 
-  Future<void> toggleTheme() async {
+  void toggleTheme() {
     AppSettings setting = getSettingUsecase();
     setting = setting.copyWith(themeMode: setting.themeMode == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark);
     state = AppStateChangedState(appSettings: setting);

@@ -26,6 +26,6 @@ class TransactionsLocalDataSourceImpl implements TransactionsLocalDataSource {
 
   @override
   Future<void> insertTransactions(List<TransactionDataModel> transactions) {
-    return database.transactionDao.updateTransaction(transactions);
+    return database.transactionDao.insertTransactions(transactions);
   }
 }

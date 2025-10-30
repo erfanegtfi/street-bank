@@ -10,5 +10,5 @@ abstract class TransactionDao {
   Future<void> insertTransaction(TransactionDataModel transaction);
 
   @Insert(onConflict: OnConflictStrategy.replace)
-  Future<void> updateTransaction(List<TransactionDataModel> transactions);
+  Future<void> insertTransactions(List<TransactionDataModel> transactions);
 }

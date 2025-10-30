@@ -163,7 +163,7 @@ class _$TransactionDao extends TransactionDao {
   }
 
   @override
-  Future<void> updateTransaction(
+  Future<void> insertTransactions(
     List<TransactionDataModel> transactions,
   ) async {
     await _transactionDataModelInsertionAdapter.insertList(
