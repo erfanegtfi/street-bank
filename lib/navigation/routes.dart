@@ -6,14 +6,15 @@ import 'package:street_bank/navigation/routes.gr.dart';
 @AutoRouterConfig(replaceInRouteName: 'Screen|Page,Route')
 class AppRouter extends RootStackRouter {
   final IsUserLoginUsecase isUserLoginUsecase;
-  AppRouter(this.isUserLoginUsecase);
+  final AuthGuard _authGuard;
+  AppRouter(this.isUserLoginUsecase) : _authGuard = AuthGuard(isUserLoginUsecase);
 
   @override
   RouteType get defaultRouteType => RouteType.material();
 
   @override
   List<AutoRoute> get routes => [
-    AutoRoute(page: DashboardRoute.page, initial: true, guards: [AuthGuard(isUserLoginUsecase)]),
+    AutoRoute(page: DashboardRoute.page, initial: true, guards: [_authGuard]),
     AutoRoute(page: LoginRoute.page),
     AutoRoute(page: SettingsRoute.page),
     AutoRoute(page: TransferRoute.page),
@@ -21,7 +22,5 @@ class AppRouter extends RootStackRouter {
   ];
 
   @override
-  List<AutoRouteGuard> get guards => [
-    // optionally add root guards here
-  ];
+  List<AutoRouteGuard> get guards => [];
 }
