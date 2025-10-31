@@ -1,11 +1,13 @@
 import 'package:app_widgets/extentions.dart';
 import 'package:app_widgets/my_scaffold.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:design_system/export_app_res.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:street_bank/app/presenter/providers/my_app_provider.dart';
 import 'package:street_bank/features/settings/presenter/settings_provider.dart';
 
+@RoutePage()
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 

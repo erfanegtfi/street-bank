@@ -5,8 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:street_bank/app/presenter/providers/my_app_provider.dart';
 import 'package:street_bank/app/presenter/providers/my_app_state.dart';
 import 'package:street_bank/di/injector.dart';
-import 'package:street_bank/features/home/home_screen.dart';
-import 'package:street_bank/navigation/navigation_service.dart';
+import 'package:street_bank/navigation/routes.dart';
 
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
@@ -17,13 +16,13 @@ class MyApp extends ConsumerWidget {
       builder: (context, ref, __) {
         MyAppState myAppState = ref.watch(myAppSettingsProvider);
         setAppBrightness(myAppState.appSettings.themeMode);
-        return MaterialApp(
+
+        return MaterialApp.router(
           title: AppText.appName,
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: myAppState.appSettings.themeMode,
-          navigatorKey: locator<NavigationService>().navigatorKey,
-          home: const MyHomePage(),
+          routerConfig: locator<AppRouter>().config(),
         );
       },
     );

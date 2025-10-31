@@ -3,6 +3,7 @@ import 'package:app_utils/constants.dart';
 import 'package:app_utils/states/view_state.dart';
 import 'package:app_widgets/dialog/alert_dialog.dart';
 import 'package:app_widgets/dialog/utils_message.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:app_widgets/my_scaffold.dart';
 import 'package:app_widgets/input_text_field.dart';
@@ -14,8 +15,9 @@ import 'package:design_system/export_app_res.dart';
 import 'package:app_widgets/extentions.dart';
 import 'package:street_bank/di/injector.dart';
 import 'package:street_bank/features/account/presenter/transfer/transfer_provider.dart';
-import 'package:street_bank/navigation/navigation_service.dart';
+import 'package:street_bank/navigation/routes.dart';
 
+@RoutePage()
 class TransferScreen extends ConsumerStatefulWidget {
   const TransferScreen({super.key});
 
@@ -112,11 +114,11 @@ class _TransferScreenState extends ConsumerState<TransferScreen> {
       title: AppText.transferBalanceScreenConfirmTitle,
       content: AppText.transferBalanceScreenConfirmMessage.replaceFirst("%s", amount).replaceFirst("%s", name),
       yesOnPressed: () {
-        locator<NavigationService>().goBack();
+        context.router.pop();
         _transfer();
       },
       noOnPressed: () {
-        locator<NavigationService>().goBack();
+        context.router.pop();
       },
       yes: AppText.confirm,
       no: AppText.cancel,
@@ -137,13 +139,13 @@ class _TransferScreenState extends ConsumerState<TransferScreen> {
         orElse: () {},
         success: (message) {
           showFlushbar(context: context, title: message);
-          locator<NavigationService>().goBack();
+          locator<AppRouter>().pop();
         },
         formValidation: (validation) {
-          if (!validation.valid) context.showError(validation.errorMessage, () => locator<NavigationService>().goBack());
+          if (!validation.valid) context.showError(validation.errorMessage, () => locator<AppRouter>().pop());
         },
         error: (GeneralError error) {
-          context.showError(error.message, () => locator<NavigationService>().goBack());
+          context.showError(error.message, () => locator<AppRouter>().pop());
         },
       );
     });

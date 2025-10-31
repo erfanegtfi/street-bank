@@ -1,11 +1,11 @@
 import 'package:app_data/local/local_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LocalStorageImpl extends LocalStorage {
+class LocalDataStorageImpl extends LocalStorage {
   final SharedPreferences prefs;
   static const String userStatus = 'user_status';
 
-  LocalStorageImpl(this.prefs);
+  LocalDataStorageImpl(this.prefs);
 
   @override
   bool isUserLogin() {

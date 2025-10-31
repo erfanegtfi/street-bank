@@ -5,11 +5,9 @@ import 'package:app_widgets/extentions.dart';
 import 'package:app_widgets/my_background_widget.dart';
 import 'package:design_system/export_app_res.dart';
 import 'package:street_bank/di/injector.dart';
-import 'package:street_bank/features/account/presenter/transactions/transaction_list_screen.dart';
-import 'package:street_bank/features/account/presenter/transfer/transfer_screen.dart';
 import 'package:street_bank/features/dashboard/presenter/widgets/dashboard_button_widget.dart';
-import 'package:street_bank/features/settings/presenter/settings_screen.dart';
-import 'package:street_bank/navigation/navigation_service.dart';
+import 'package:street_bank/navigation/routes.dart';
+import 'package:street_bank/navigation/routes.gr.dart';
 
 class HeaderBalance extends StatelessWidget {
   final double balance;
@@ -35,7 +33,7 @@ class HeaderBalance extends StatelessWidget {
           padding: const EdgeInsets.only(top: AppDimen.spacingLarge),
           child: IconButton(
             onPressed: () {
-              locator<NavigationService>().push(SettingsScreen());
+              locator<AppRouter>().push(SettingsRoute());
             },
             icon: Icon(Icons.settings, color: appColors().white),
           ),
@@ -64,14 +62,14 @@ class HeaderBalance extends StatelessWidget {
           title: AppText.homeScreenTransactions,
           icon: Icons.list_alt_rounded,
           onPressed: () {
-            locator<NavigationService>().push(TransactionListScreen());
+            locator<AppRouter>().push(TransactionListRoute());
           },
         ),
         HeaderButton(
           title: AppText.homeScreenTransfer,
           icon: Icons.monetization_on,
           onPressed: () {
-            locator<NavigationService>().push(TransferScreen());
+            locator<AppRouter>().push(TransferRoute());
           },
         ),
       ],

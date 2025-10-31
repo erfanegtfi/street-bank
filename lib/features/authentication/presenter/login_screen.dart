@@ -1,6 +1,7 @@
 import 'package:app_data/general_error.dart';
 import 'package:app_utils/states/view_state.dart';
 import 'package:app_widgets/dialog/utils_message.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:app_widgets/my_scaffold.dart';
 import 'package:app_widgets/input_text_field.dart';
@@ -12,12 +13,14 @@ import 'package:app_widgets/extentions.dart';
 import 'package:street_bank/di/injector.dart';
 import 'package:street_bank/features/authentication/presenter/login_provider.dart';
 import 'package:street_bank/features/home/home_provider.dart';
-import 'package:street_bank/navigation/navigation_service.dart';
+import 'package:street_bank/navigation/routes.dart';
 
 import 'widgets/header_logo_widget.dart';
 
+@RoutePage()
 class LoginScreen extends ConsumerStatefulWidget {
-  const LoginScreen({super.key});
+  final Function()? onLoginCallback;
+  const LoginScreen({this.onLoginCallback, super.key});
 
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
@@ -103,13 +106,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         orElse: () {},
         success: (message) {
           showFlushbar(context: context, title: message);
+          widget.onLoginCallback?.call();
           ref.read(homeProvider.notifier).userLogedin();
         },
         formValidation: (validation) {
-          if (!validation.valid) context.showError(validation.errorMessage, () => locator<NavigationService>().goBack());
+          if (!validation.valid) context.showError(validation.errorMessage, () => locator<AppRouter>().pop());
         },
         error: (GeneralError error) {
-          context.showError(error.message, () => locator<NavigationService>().goBack());
+          context.showError(error.message, () => locator<AppRouter>().pop());
         },
       );
     });
