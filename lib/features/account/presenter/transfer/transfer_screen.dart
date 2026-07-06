@@ -1,5 +1,6 @@
 import 'package:app_data/general_error.dart';
 import 'package:app_utils/constants.dart';
+import 'package:app_utils/states/form_validation_state.dart';
 import 'package:app_utils/states/view_state.dart';
 import 'package:app_widgets/dialog/alert_dialog.dart';
 import 'package:app_widgets/dialog/utils_message.dart';
@@ -141,11 +142,10 @@ class _TransferScreenState extends ConsumerState<TransferScreen> {
           showFlushbar(context: context, title: message);
           locator<AppRouter>().pop();
         },
-        formValidation: (validation) {
-          if (!validation.valid) context.showError(validation.errorMessage, () => locator<AppRouter>().pop());
-        },
-        error: (GeneralError error) {
-          context.showError(error.message, () => locator<AppRouter>().pop());
+
+        error: (error, formError) {
+          if (formError != null) if (!formError.valid) context.showError(formError.errorMessage, () => locator<AppRouter>().pop());
+          if (error != null) context.showError(error.message, () => locator<AppRouter>().pop());
         },
       );
     });

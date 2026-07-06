@@ -1,7 +1,3 @@
-import 'dart:async';
-
-import 'package:app_data/general_error.dart';
-import 'package:app_data/model/data_response.dart';
 import 'package:app_data/repository_strategy.dart';
 import 'package:app_utils/constants.dart';
 import 'package:app_utils/states/view_state.dart';
@@ -9,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:street_bank/di/injector.dart';
 import 'package:street_bank/features/account/domain/entities/transaction.dart';
 import 'package:street_bank/features/account/domain/usecase/transaction_list_usecase.dart';
-import 'package:rxdart/rxdart.dart';
 
 final dashboardTransactionListProvider = StateNotifierProvider.autoDispose<DashboardTransactionListNotifier, ViewState<List<Transaction>>>((
   ref,
@@ -21,8 +16,6 @@ final dashboardTransactionListProvider = StateNotifierProvider.autoDispose<Dashb
 
 class DashboardTransactionListNotifier extends StateNotifier<ViewState<List<Transaction>>> {
   final TransactionListUsecase transactionListUsecase;
-  StreamSubscription<DataResponse<List<Transaction>?>>? _subscription;
-  final PublishSubject<GeneralError> errorPublisher = PublishSubject();
 
   List<Transaction> transactions = [];
   final Ref ref;
@@ -31,9 +24,8 @@ class DashboardTransactionListNotifier extends StateNotifier<ViewState<List<Tran
 
   void fetchTransactions() async {
     state = ViewState.loading();
-    await _subscription?.cancel();
-    _subscription = transactionListUsecase(RepositoryStrategy.offlineFirst).listen((result) {
-      result.when(
+    transactionListUsecase(RepositoryStrategy.offlineFirst, (response) {
+      response.when(
         success: (transactions) {
           this.transactions = transactions ?? [];
           if ((transactions?.length ?? 0) >= Constants.homeTrasactionListCount)
@@ -42,21 +34,23 @@ class DashboardTransactionListNotifier extends StateNotifier<ViewState<List<Tran
             state = ViewState.success(transactions ?? []);
         },
         error: (error) {
-          //  && error.appException is NetworkConnectionException
-          if (transactions.isEmpty)
-            state = ViewState.error(error);
-          else
-            errorPublisher.add(error);
+          state = ViewState.error(error: error);
         },
       );
     });
   }
 
-  @override
-  void dispose() {
-    _subscription?.cancel();
-    errorPublisher.close();
-
-    super.dispose();
-  }
+  List<Transaction> getAllTransactions() => transactions;
 }
+
+final dashboardTransactionListUIProvider = Provider.autoDispose<ViewState<List<Transaction>>>((ref) {
+  final value = ref.watch(dashboardTransactionListProvider);
+  return value.maybeWhen(
+    orElse: () => value,
+    error: (error, formError) {
+      List<Transaction> lastSuccessvalue = ref.read(dashboardTransactionListProvider.notifier).getAllTransactions();
+      if (lastSuccessvalue.isNotEmpty == true) return ViewState.success(lastSuccessvalue);
+      return ViewState.error(error: error);
+    },
+  );
+});

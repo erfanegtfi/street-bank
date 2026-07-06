@@ -8,15 +8,12 @@ class TransactionListUsecase {
 
   TransactionListUsecase({required this.accountRepository});
 
-  Stream<DataResponse<List<Transaction>?>> call(RepositoryStrategy strategy) async* {
+  Future<void> call(RepositoryStrategy strategy, void Function(DataResponse<List<Transaction>?> response) callback) async {
+    if (strategy == RepositoryStrategy.remote) callback(await accountRepository.getAllTransactionsRemote());
+    if (strategy == RepositoryStrategy.offline) callback(DataResponse.success(await accountRepository.getAllTransactionsLocal()));
     if (strategy == RepositoryStrategy.offlineFirst) {
-      yield DataResponse.success(await accountRepository.getAllTransactionsLocal());
-      yield await accountRepository.getAllTransactionsRemote();
-      yield DataResponse.success(await accountRepository.getAllTransactionsLocal());
-    } else if (strategy == RepositoryStrategy.offline)
-      yield DataResponse.success(await accountRepository.getAllTransactionsLocal());
-    else {
-      yield await accountRepository.getAllTransactionsRemote();
+      callback(DataResponse.success(await accountRepository.getAllTransactionsLocal()));
+      callback(await accountRepository.getAllTransactionsRemote());
     }
   }
 }

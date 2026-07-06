@@ -9,6 +9,6 @@ abstract class ViewState<T> with _$ViewState<T> {
   const factory ViewState.init() = Init<T>;
   const factory ViewState.loading() = Loading<T>;
   const factory ViewState.success(T value) = Success<T>;
-  const factory ViewState.error(GeneralError error) = Error<T>;
-  const factory ViewState.formValidation(FormValidationState validation) = FormValidation;
+  const factory ViewState.error({GeneralError? error, FormValidationState? formError}) = Error<T>;
 }
+// ,  {FormValidationState? formError}

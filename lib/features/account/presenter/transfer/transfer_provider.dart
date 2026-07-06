@@ -39,7 +39,7 @@ class TransferNotifier extends StateNotifier<ViewState<String>> {
 
   FormValidationState _transferValidateForm({required String amount, required String accountNumber, required String beneficiaryName}) {
     FormValidationState va = transferFormValidationUsecase.call(getParams(amount, accountNumber, beneficiaryName));
-    state = ViewState.formValidation(va);
+    state = ViewState.error(formError: va);
     return va;
   }
 
@@ -50,7 +50,7 @@ class TransferNotifier extends StateNotifier<ViewState<String>> {
       state = ViewState.success(AppText.transferBalanceScreenMessage.replaceFirst("%s", amount).replaceFirst("%s", beneficiaryName));
       _updateDashboard();
     } else
-      state = ViewState.error(GeneralError.withMessage(AppText.errorUnknown));
+      state = ViewState.error(error: GeneralError.withMessage(AppText.errorUnknown));
   }
 
   TransferBalanceParams getParams(String anount, String accountNumber, String beneficiaryName) {

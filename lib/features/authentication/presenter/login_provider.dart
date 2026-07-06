@@ -25,7 +25,7 @@ class LoginNotifier extends StateNotifier<ViewState<String>> {
 
   FormValidationState _loginValidateForm({required String email, required String password}) {
     FormValidationState va = loginFormValidationUsecase.call(getParam(email: email, password: password));
-    state = ViewState.formValidation(va);
+    state = ViewState.error(formError: va);
     return va;
   }
 
@@ -44,7 +44,7 @@ class LoginNotifier extends StateNotifier<ViewState<String>> {
         state = ViewState.success(AppText.loginSuccessMessage);
       },
       error: (error) {
-        state = ViewState.error(error);
+        state = ViewState.error(error: error);
       },
     );
   }

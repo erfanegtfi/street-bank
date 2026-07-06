@@ -38,9 +38,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       dashboardTransactionListNotifier?.fetchTransactions();
       ref.read(getAccountBalanceProvider.notifier).getAccountBalance();
     });
-    dashboardTransactionListNotifier?.errorPublisher.distinct().debounceTime(Duration(seconds: 2)).listen((error) {
-      if (mounted) context.showError(error.message, () => locator<AppRouter>().pop());
-    });
+
     super.initState();
   }
 
@@ -52,8 +50,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    setup_dashboardTransactionListProvider_listeners();
-    setup_getAccountBalanceProvider_listeners();
+    setupDashboardTransactionListProviderListeners();
+    setupGetAccountBalanceProviderListeners();
     return MyScaffold(
       body: CustomScrollView(
         slivers: [
@@ -77,7 +75,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           success: (balance) {
             return HeaderBalance(balance: balance);
           },
-          error: (error) => getErrorWidget(error),
+          error: (error, formError) => getErrorWidget(error),
         );
       },
     );
@@ -86,40 +84,44 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   Widget getTransactionList() {
     return Consumer(
       builder: (context, ref, __) {
-        final result = ref.watch(dashboardTransactionListProvider);
+        final result = ref.watch(dashboardTransactionListUIProvider);
         return result.maybeWhen(
           orElse: () => SliverToBoxAdapter(child: SizedBox()),
           loading: () => SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())),
           success: (transactions) {
             return TransactionListWidget(transactionList: transactions);
           },
-          error: (error) => SliverToBoxAdapter(child: getErrorWidget(error)),
+          error: (error, formError) => SliverToBoxAdapter(child: getErrorWidget(error)),
         );
       },
     );
   }
 
-  Widget getErrorWidget(GeneralError error) {
+  Widget getErrorWidget(GeneralError? error) {
+    if (error == null) return SizedBox();
     return MyErrorWidget(
       image: (error.appException is NetworkConnectionException) ? AppAssets.iconWifi : AppAssets.iconPaper,
       message: error.message,
     );
   }
 
-  setup_dashboardTransactionListProvider_listeners() {
+  setupDashboardTransactionListProviderListeners() {
     ref.listen<ViewState<List<Transaction>>>(dashboardTransactionListProvider, (previous, next) {
       next.maybeWhen(
         orElse: () {},
-        error: (error) {
-          context.showError(error.message, () => locator<AppRouter>().pop());
+        error: (error, formError) {
+          if (error != null) context.showError(error.message, () => locator<AppRouter>().pop());
         },
       );
     });
+    ref.listen<ViewState<List<Transaction>>>(dashboardTransactionListUIProvider, (previous, next) {
+      next.maybeWhen(orElse: () {});
+    });
   }
 
-  setup_getAccountBalanceProvider_listeners() {
+  setupGetAccountBalanceProviderListeners() {
     ref.listen<ViewState<double>>(getAccountBalanceProvider, (previous, next) {
-      next.maybeWhen(orElse: () {}, error: (error) {});
+      next.maybeWhen(orElse: () {}, error: (error, formError) {});
     });
   }
 }

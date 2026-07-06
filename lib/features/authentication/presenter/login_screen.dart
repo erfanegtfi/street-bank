@@ -1,4 +1,3 @@
-import 'package:app_data/general_error.dart';
 import 'package:app_utils/states/view_state.dart';
 import 'package:app_widgets/dialog/utils_message.dart';
 import 'package:auto_route/auto_route.dart';
@@ -109,11 +108,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           widget.onLoginCallback?.call();
           context.router.popAndPush(DashboardRoute());
         },
-        formValidation: (validation) {
-          if (!validation.valid) context.showError(validation.errorMessage, () => locator<AppRouter>().pop());
-        },
-        error: (GeneralError error) {
-          context.showError(error.message, () => locator<AppRouter>().pop());
+
+        error: (error, formError) {
+          if (formError != null) if (!formError.valid) context.showError(formError.errorMessage, () => locator<AppRouter>().pop());
+          if (error != null) context.showError(error.message, () => locator<AppRouter>().pop());
         },
       );
     });

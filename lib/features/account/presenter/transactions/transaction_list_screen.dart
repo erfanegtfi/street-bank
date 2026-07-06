@@ -8,7 +8,6 @@ import 'package:design_system/export_app_res.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:street_bank/features/account/domain/entities/transaction.dart';
-import 'package:street_bank/features/account/domain/usecase/params/transaction_filter_params.dart';
 import 'package:street_bank/features/account/presenter/transactions/item_transaction.dart';
 import 'package:street_bank/features/account/presenter/transactions/providers/transaction_list_provider.dart';
 import 'package:street_bank/features/account/presenter/transactions/widgets/search_bar_widget.dart';
@@ -22,7 +21,6 @@ class TransactionListScreen extends ConsumerStatefulWidget {
 }
 
 class _TransactionListScreenState extends ConsumerState<TransactionListScreen> {
-  TransactionFilterParam params = TransactionFilterParam();
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -47,12 +45,10 @@ class _TransactionListScreenState extends ConsumerState<TransactionListScreen> {
         SizedBox(height: AppDimen.spacingNormal),
         SearchBarWidget(
           onTextChanged: (text) {
-            params.name = text;
-            ref.watch(transactionListProvider.notifier).filterList(params);
+            ref.watch(transactionListProvider.notifier).search(text);
           },
           onFilter: (transactionType) {
-            params.type = transactionType;
-            ref.watch(transactionListProvider.notifier).filterList(params);
+            ref.watch(transactionListProvider.notifier).changeType(transactionType);
           },
         ),
         SizedBox(height: AppDimen.spacingNormal),
@@ -73,13 +69,15 @@ class _TransactionListScreenState extends ConsumerState<TransactionListScreen> {
                     return SizedBox(height: 200, child: const ItemNotFoundWidget(message: AppText.transactionScreenItemNotFound));
                   }
                 },
-                error: (error) => SizedBox(
-                  height: 200,
-                  child: MyErrorWidget(
-                    image: (error.appException is NetworkConnectionException) ? AppAssets.iconWifi : AppAssets.iconPaper,
-                    message: error.message,
-                  ),
-                ),
+                error: (error, formError) => error != null
+                    ? SizedBox(
+                        height: 200,
+                        child: MyErrorWidget(
+                          image: (error.appException is NetworkConnectionException) ? AppAssets.iconWifi : AppAssets.iconPaper,
+                          message: error.message,
+                        ),
+                      )
+                    : SizedBox(),
               );
             },
           ),
@@ -90,7 +88,7 @@ class _TransactionListScreenState extends ConsumerState<TransactionListScreen> {
 
   setup_transactionListProvider_listeners() {
     ref.listen<ViewState<List<Transaction>>>(transactionListProvider, (previous, next) {
-      next.maybeWhen(orElse: () {}, error: (error) {});
+      next.maybeWhen(orElse: () {}, error: (error, formError) {});
     });
   }
 }

@@ -9,8 +9,7 @@ class TransactionFilterUsecase {
   TransactionFilterUsecase({required this.accountRepository});
 
   Future<List<Transaction>?> call(TransactionFilterParam params) async {
-    List<Transaction>? transactions = await accountRepository.getAllTransactionsLocal();
-    return transactions?.where((tras) {
+    return params.transactions?.where((tras) {
       bool hasValidType = params.type == null || params.type == TransactionTyoe.all;
       if (params.type == TransactionTyoe.credit && (tras.amount ?? 0) > 0) hasValidType = true;
       if (params.type == TransactionTyoe.debit && (tras.amount ?? 0) < 0) hasValidType = true;
