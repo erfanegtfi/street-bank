@@ -8,7 +8,8 @@ part of 'account_rest_client.dart';
 // RetrofitGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter
+// ignore_for_file: type=lint
+// ignore_for_file: unnecessary_brace_in_string_interps,no_leading_underscores_for_local_identifiers,unused_element,unnecessary_string_interpolations,unused_element_parameter,avoid_unused_constructor_parameters,unreachable_from_main,avoid_redundant_argument_values
 
 class _AccountRestClient implements AccountRestClient {
   _AccountRestClient(this._dio, {this.baseUrl, this.errorLogger});
@@ -35,7 +36,7 @@ class _AccountRestClient implements AccountRestClient {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    final _result = await _dio.fetch<dynamic>(_options);
     late ListResponse<TransactionDataModel> _value;
     try {
       _value = ListResponse<TransactionDataModel>.fromJson(
@@ -43,7 +44,7 @@ class _AccountRestClient implements AccountRestClient {
         (json) => TransactionDataModel.fromJson(json as Map<String, dynamic>),
       );
     } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
+      errorLogger?.logError(e, s, _options, response: _result);
       rethrow;
     }
     return _value;

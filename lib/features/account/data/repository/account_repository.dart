@@ -56,6 +56,11 @@ class AccountRepositoryImpl implements AccountRepository {
   }
 
   @override
+  Stream<List<Transaction>?> getAllTransactionsAsStream() {
+    return transactionsLocalDataSource.getAllTransactionsAsStream().map((event) => event.map((e) => e.toEntity()).toList());
+  }
+
+  @override
   void setUserBalance(double balance) {
     accountLocalStorage.setUserBalance(balance);
   }

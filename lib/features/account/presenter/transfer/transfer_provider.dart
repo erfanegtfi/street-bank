@@ -12,23 +12,23 @@ import 'package:street_bank/features/account/domain/usecase/transfer_form_valida
 import 'package:street_bank/features/dashboard/presenter/providers/get_account_balance_provider.dart';
 import 'package:street_bank/features/dashboard/presenter/providers/transaction_list_provider.dart';
 
-final transferProvider = StateNotifierProvider.autoDispose<TransferNotifier, ViewState<String>>((ref) {
+final transferProvider = StateNotifierProvider.autoDispose<TransferNotifier, TransferViewState>((ref) {
   TransferFormValidationUsecase transferFormValidationUsecase = locator<TransferFormValidationUsecase>();
   TransferBalanceUsecase transferBalanceUsecase = locator<TransferBalanceUsecase>();
 
   return TransferNotifier(transferFormValidationUsecase, transferBalanceUsecase, ref);
 });
 
-class TransferNotifier extends StateNotifier<ViewState<String>> {
+class TransferNotifier extends StateNotifier<TransferViewState> {
   final TransferFormValidationUsecase transferFormValidationUsecase;
   final TransferBalanceUsecase transferBalanceUsecase;
 
   final Ref ref;
 
-  TransferNotifier(this.transferFormValidationUsecase, this.transferBalanceUsecase, this.ref) : super(ViewState.init());
+  TransferNotifier(this.transferFormValidationUsecase, this.transferBalanceUsecase, this.ref) : super(TransferViewState.init());
 
   void transfer({required String amount, required String accountNumber, required String beneficiaryName}) async {
-    state = ViewState.loading();
+    state = TransferViewState.loading();
 
     FormValidationState va = _transferValidateForm(amount: amount, accountNumber: accountNumber, beneficiaryName: beneficiaryName);
 
@@ -39,18 +39,20 @@ class TransferNotifier extends StateNotifier<ViewState<String>> {
 
   FormValidationState _transferValidateForm({required String amount, required String accountNumber, required String beneficiaryName}) {
     FormValidationState va = transferFormValidationUsecase.call(getParams(amount, accountNumber, beneficiaryName));
-    state = ViewState.error(formError: va);
+    state = TransferViewState.formError(va);
     return va;
   }
 
   void _doTransfer({required String amount, required String accountNumber, required String beneficiaryName}) async {
-    state = ViewState.loading();
+    state = TransferViewState.loading();
     bool result = await transferBalanceUsecase(getParams(amount, accountNumber, beneficiaryName));
     if (result) {
-      state = ViewState.success(AppText.transferBalanceScreenMessage.replaceFirst("%s", amount).replaceFirst("%s", beneficiaryName));
+      state = TransferViewState.success(
+        AppText.transferBalanceScreenMessage.replaceFirst("%s", amount).replaceFirst("%s", beneficiaryName),
+      );
       _updateDashboard();
     } else
-      state = ViewState.error(error: GeneralError.withMessage(AppText.errorUnknown));
+      state = TransferViewState.serverError(GeneralError.withMessage(AppText.errorUnknown));
   }
 
   TransferBalanceParams getParams(String anount, String accountNumber, String beneficiaryName) {
@@ -66,5 +68,28 @@ class TransferNotifier extends StateNotifier<ViewState<String>> {
   _updateDashboard() {
     ref.read(dashboardTransactionListProvider.notifier).fetchTransactions();
     ref.read(getAccountBalanceProvider.notifier).getAccountBalance();
+  }
+}
+
+class TransferViewState {
+  GeneralError? error;
+  FormValidationState? formError;
+  String? successMessage;
+  bool? loading;
+
+  TransferViewState.init();
+  TransferViewState.loading() : loading = true;
+  TransferViewState.serverError(this.error) : loading = false;
+  TransferViewState.formError(this.formError);
+  TransferViewState.success(this.successMessage);
+
+  TransferViewState({this.error, this.successMessage, this.loading});
+
+  TransferViewState copyWith({GeneralError? error, String? successMessage, bool? loading}) {
+    return TransferViewState(
+      error: error ?? this.error,
+      successMessage: successMessage ?? this.successMessage,
+      loading: loading ?? this.loading,
+    );
   }
 }

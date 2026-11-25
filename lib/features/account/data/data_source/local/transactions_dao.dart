@@ -6,6 +6,9 @@ abstract class TransactionDao {
   @Query('SELECT * FROM transactions  ORDER BY date DESC')
   Future<List<TransactionDataModel>> getAllTransactions();
 
+  @Query('SELECT * FROM transactions  ORDER BY date DESC')
+  Stream<List<TransactionDataModel>> getAllTransactionsAsStream();
+
   @Insert(onConflict: OnConflictStrategy.replace)
   Future<void> insertTransaction(TransactionDataModel transaction);
 

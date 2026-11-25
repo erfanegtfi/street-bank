@@ -1,7 +1,4 @@
-import 'package:app_data/general_error.dart';
 import 'package:app_utils/constants.dart';
-import 'package:app_utils/states/form_validation_state.dart';
-import 'package:app_utils/states/view_state.dart';
 import 'package:app_widgets/dialog/alert_dialog.dart';
 import 'package:app_widgets/dialog/utils_message.dart';
 import 'package:auto_route/auto_route.dart';
@@ -93,19 +90,17 @@ class _TransferScreenState extends ConsumerState<TransferScreen> {
   getTransferButton() {
     return Consumer(
       builder: (context, ref, __) {
-        final reqult = ref.watch(transferProvider);
-        return reqult.maybeWhen(
-          loading: () => Center(child: CircularProgressIndicator()),
-          orElse: () {
-            return MyElevatedButton(AppText.transferBalanceScreenSubmit, () {
-              if (_formKey.currentState!.validate()) {
-                String amount = _amountController.text;
-                String name = _nameController.text;
-                _confirmTransfer(amount, name);
-              }
-            });
-          },
-        );
+        final result = ref.watch(transferProvider);
+        if (result.loading == true)
+          return Center(child: CircularProgressIndicator());
+        else
+          return MyElevatedButton(AppText.loginScreenFormSubmitBotton, () {
+            if (_formKey.currentState!.validate()) {
+              String amount = _amountController.text;
+              String name = _nameController.text;
+              _confirmTransfer(amount, name);
+            }
+          });
       },
     );
   }
@@ -135,19 +130,15 @@ class _TransferScreenState extends ConsumerState<TransferScreen> {
   }
 
   setupLoginProviderListener() {
-    ref.listen<ViewState<String>>(transferProvider, (previous, next) {
-      next.maybeWhen(
-        orElse: () {},
-        success: (message) {
-          showFlushbar(context: context, title: message);
-          locator<AppRouter>().pop();
-        },
-
-        error: (error, formError) {
-          if (formError != null) if (!formError.valid) context.showError(formError.errorMessage, () => locator<AppRouter>().pop());
-          if (error != null) context.showError(error.message, () => locator<AppRouter>().pop());
-        },
-      );
+    ref.listen<TransferViewState>(transferProvider, (previous, next) {
+      if (next.formError != null && next.formError?.valid != true)
+        context.showError(next.formError!.errorMessage, () => locator<AppRouter>().pop());
+      else if (next.error != null)
+        context.showError(next.error!.message, () => locator<AppRouter>().pop());
+      else if (next.successMessage != null) {
+        showFlushbar(context: context, title: next.successMessage!);
+        locator<AppRouter>().pop();
+      }
     });
   }
 

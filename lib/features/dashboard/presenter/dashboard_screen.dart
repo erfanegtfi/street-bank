@@ -1,6 +1,5 @@
 import 'package:app_data/general_error.dart';
 import 'package:app_data/remote/exception/network_connection_exception.dart';
-import 'package:app_utils/states/view_state.dart';
 import 'package:app_widgets/error_widget.dart';
 import 'package:app_widgets/extentions.dart';
 import 'package:app_widgets/my_scaffold.dart';
@@ -8,9 +7,8 @@ import 'package:auto_route/auto_route.dart';
 import 'package:design_system/export_app_res.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:street_bank/di/injector.dart';
-import 'package:street_bank/features/account/domain/entities/transaction.dart';
+import 'package:street_bank/features/account/presenter/transactions/providers/transaction_list_provider.dart';
 import 'package:street_bank/features/dashboard/presenter/providers/get_account_balance_provider.dart';
 import 'package:street_bank/features/dashboard/presenter/providers/transaction_list_provider.dart';
 import 'package:street_bank/features/dashboard/presenter/widgets/dashboard_header_balance_widget.dart';
@@ -69,14 +67,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     return Consumer(
       builder: (context, ref, __) {
         final result = ref.watch(getAccountBalanceProvider);
-        return result.maybeWhen(
-          orElse: () => SizedBox(),
-          loading: () => SizedBox(height: 200, child: Center(child: CircularProgressIndicator())),
-          success: (balance) {
-            return HeaderBalance(balance: balance);
-          },
-          error: (error, formError) => getErrorWidget(error),
-        );
+        if (result.loading == true) return SizedBox(height: 200, child: Center(child: CircularProgressIndicator()));
+        if (result.balance != null) return HeaderBalance(balance: result.balance ?? 0);
+        if (result.error != null) return getErrorWidget(result.error);
+        return SizedBox();
       },
     );
   }
@@ -84,15 +78,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   Widget getTransactionList() {
     return Consumer(
       builder: (context, ref, __) {
-        final result = ref.watch(dashboardTransactionListUIProvider);
-        return result.maybeWhen(
-          orElse: () => SliverToBoxAdapter(child: SizedBox()),
-          loading: () => SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())),
-          success: (transactions) {
-            return TransactionListWidget(transactionList: transactions);
-          },
-          error: (error, formError) => SliverToBoxAdapter(child: getErrorWidget(error)),
-        );
+        final result = ref.watch(dashboardTransactionListProvider);
+        if (result.loading == true) return SliverToBoxAdapter(child: Center(child: CircularProgressIndicator()));
+        if (result.transactions != null) return TransactionListWidget(transactionList: result.transactions!);
+        if (result.error != null) return SliverToBoxAdapter(child: getErrorWidget(result.error));
+        return SliverToBoxAdapter(child: SizedBox());
       },
     );
   }
@@ -106,22 +96,12 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   }
 
   setupDashboardTransactionListProviderListeners() {
-    ref.listen<ViewState<List<Transaction>>>(dashboardTransactionListProvider, (previous, next) {
-      next.maybeWhen(
-        orElse: () {},
-        error: (error, formError) {
-          if (error != null) context.showError(error.message, () => locator<AppRouter>().pop());
-        },
-      );
-    });
-    ref.listen<ViewState<List<Transaction>>>(dashboardTransactionListUIProvider, (previous, next) {
-      next.maybeWhen(orElse: () {});
+    ref.listen<TransactionsViewState>(dashboardTransactionListProvider, (previous, next) {
+      if (next.error != null) context.showError(next.error?.message, () => locator<AppRouter>().pop());
     });
   }
 
   setupGetAccountBalanceProviderListeners() {
-    ref.listen<ViewState<double>>(getAccountBalanceProvider, (previous, next) {
-      next.maybeWhen(orElse: () {}, error: (error, formError) {});
-    });
+    ref.listen<AccountBalanceViewState>(getAccountBalanceProvider, (previous, next) {});
   }
 }

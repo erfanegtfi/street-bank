@@ -116,7 +116,7 @@ class _$BankDatabase extends BankDatabase {
 
 class _$TransactionDao extends TransactionDao {
   _$TransactionDao(this.database, this.changeListener)
-    : _queryAdapter = QueryAdapter(database),
+    : _queryAdapter = QueryAdapter(database, changeListener),
       _transactionDataModelInsertionAdapter = InsertionAdapter(
         database,
         'transactions',
@@ -128,6 +128,7 @@ class _$TransactionDao extends TransactionDao {
           'beneficiary_name': item.beneficiaryName,
           'account_number': item.accountNumber,
         },
+        changeListener,
       );
 
   final sqflite.DatabaseExecutor database;
@@ -151,6 +152,23 @@ class _$TransactionDao extends TransactionDao {
         beneficiaryName: row['beneficiary_name'] as String?,
         accountNumber: row['account_number'] as String?,
       ),
+    );
+  }
+
+  @override
+  Stream<List<TransactionDataModel>> getAllTransactionsAsStream() {
+    return _queryAdapter.queryListStream(
+      'SELECT * FROM transactions  ORDER BY date DESC',
+      mapper: (Map<String, Object?> row) => TransactionDataModel(
+        id: row['id'] as String?,
+        date: row['date'] as String?,
+        description: row['description'] as String?,
+        amount: row['amount'] as double?,
+        beneficiaryName: row['beneficiary_name'] as String?,
+        accountNumber: row['account_number'] as String?,
+      ),
+      queryableName: 'transactions',
+      isView: false,
     );
   }
 

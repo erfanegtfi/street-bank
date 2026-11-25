@@ -4,6 +4,7 @@ import 'package:street_bank/features/account/data/model/transaction_data_model.d
 
 abstract class TransactionsLocalDataSource {
   Future<List<TransactionDataModel>> getAllTransactions();
+  Stream<List<TransactionDataModel>> getAllTransactionsAsStream();
   Future<void> insertTransaction(TransactionDataModel transaction);
   Future<void> insertTransactions(List<TransactionDataModel> transactions);
 }
@@ -17,6 +18,11 @@ class TransactionsLocalDataSourceImpl implements TransactionsLocalDataSource {
   @override
   Future<List<TransactionDataModel>> getAllTransactions() {
     return database.transactionDao.getAllTransactions();
+  }
+
+  @override
+  Stream<List<TransactionDataModel>> getAllTransactionsAsStream() {
+    return database.transactionDao.getAllTransactionsAsStream();
   }
 
   @override

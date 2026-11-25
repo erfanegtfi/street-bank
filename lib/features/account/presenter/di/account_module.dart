@@ -7,6 +7,7 @@ import 'package:street_bank/features/account/data/repository/account_repository.
 import 'package:street_bank/features/account/domain/repositories/account_repository.dart';
 import 'package:street_bank/features/account/domain/usecase/get_account_balance_usecase.dart';
 import 'package:street_bank/features/account/domain/usecase/transaction_filter_list_usecase.dart';
+import 'package:street_bank/features/account/domain/usecase/transaction_list_stream_usecase.dart';
 import 'package:street_bank/features/account/domain/usecase/transaction_list_usecase.dart';
 import 'package:street_bank/features/account/domain/usecase/transfer_balance_usecase.dart';
 import 'package:street_bank/features/account/domain/usecase/transfer_form_validation_usecase.dart';
@@ -28,6 +29,9 @@ abstract class AccountModule {
   TransactionFilterUsecase get transactionFilterUsecase => TransactionFilterUsecase(accountRepository: locator<AccountRepository>());
   @injectable
   TransferBalanceUsecase get transferBalanceUsecase => TransferBalanceUsecase(accountRepository: locator<AccountRepository>());
+  @injectable
+  TransactionListStreamUsecase get transactionListStreamUsecase =>
+      TransactionListStreamUsecase(accountRepository: locator<AccountRepository>());
   @injectable
   TransferFormValidationUsecase get transferFormValidationUsecase =>
       TransferFormValidationUsecase(accountLocalStorage: locator<AccountLocalStorage>());

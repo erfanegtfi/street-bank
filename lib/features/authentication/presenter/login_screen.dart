@@ -82,38 +82,32 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   getLoginButton() {
     return Consumer(
       builder: (context, ref, __) {
-        final reqult = ref.watch(loginProvider);
-        return reqult.maybeWhen(
-          loading: () => Center(child: CircularProgressIndicator()),
-          orElse: () {
-            return MyElevatedButton(AppText.loginScreenFormSubmitBotton, () {
-              if (_formKey.currentState!.validate()) {
-                String email = _emailController.text.trim();
-                String password = _passwordController.text.trim();
-                ref.read(loginProvider.notifier).login(email: email, password: password);
-              }
-            });
-          },
-        );
+        final result = ref.watch(loginProvider);
+        if (result.loading == true)
+          return Center(child: CircularProgressIndicator());
+        else
+          return MyElevatedButton(AppText.loginScreenFormSubmitBotton, () {
+            if (_formKey.currentState!.validate()) {
+              String email = _emailController.text.trim();
+              String password = _passwordController.text.trim();
+              ref.read(loginProvider.notifier).login(email: email, password: password);
+            }
+          });
       },
     );
   }
 
   setupLoginProviderListener() {
-    ref.listen<ViewState<String>>(loginProvider, (previous, next) {
-      next.maybeWhen(
-        orElse: () {},
-        success: (message) {
-          showFlushbar(context: context, title: message);
-          widget.onLoginCallback?.call();
-          context.router.popAndPush(DashboardRoute());
-        },
-
-        error: (error, formError) {
-          if (formError != null) if (!formError.valid) context.showError(formError.errorMessage, () => locator<AppRouter>().pop());
-          if (error != null) context.showError(error.message, () => locator<AppRouter>().pop());
-        },
-      );
+    ref.listen<LoginViewState>(loginProvider, (previous, next) {
+      if (next.formError != null && next.formError?.valid != true)
+        context.showError(next.formError!.errorMessage, () => locator<AppRouter>().pop());
+      else if (next.error != null)
+        context.showError(next.error!.message, () => locator<AppRouter>().pop());
+      else if (next.successLogin == true) {
+        showFlushbar(context: context, title: AppText.loginSuccessMessage);
+        widget.onLoginCallback?.call();
+        context.router.popAndPush(DashboardRoute());
+      }
     });
   }
 

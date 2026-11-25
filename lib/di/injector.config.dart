@@ -1,5 +1,5 @@
-// dart format width=80
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// dart format width=80
 
 // **************************************************************************
 // InjectableConfigGenerator
@@ -9,6 +9,7 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+
 import 'package:app_data/local/local_storage.dart' as _i377;
 import 'package:dio/dio.dart' as _i361;
 import 'package:get_it/get_it.dart' as _i174;
@@ -34,6 +35,8 @@ import '../features/account/domain/usecase/get_account_balance_usecase.dart'
     as _i241;
 import '../features/account/domain/usecase/transaction_filter_list_usecase.dart'
     as _i916;
+import '../features/account/domain/usecase/transaction_list_stream_usecase.dart'
+    as _i980;
 import '../features/account/domain/usecase/transaction_list_usecase.dart'
     as _i24;
 import '../features/account/domain/usecase/transfer_balance_usecase.dart'
@@ -95,6 +98,9 @@ Future<_i174.GetIt> init(
   gh.factory<_i1056.TransferBalanceUsecase>(
     () => accountModule.transferBalanceUsecase,
   );
+  gh.factory<_i980.TransactionListStreamUsecase>(
+    () => accountModule.transactionListStreamUsecase,
+  );
   gh.factory<_i867.TransferFormValidationUsecase>(
     () => accountModule.transferFormValidationUsecase,
   );
@@ -113,7 +119,7 @@ Future<_i174.GetIt> init(
     () => _i416.AccountLocalStorageImpl(gh<_i460.SharedPreferences>()),
   );
   gh.factory<_i257.AccountRestClient>(
-    () => _i257.AccountRestClient.new(
+    () => _i257.AccountRestClient(
       gh<_i361.Dio>(),
       baseUrl: gh<String>(instanceName: 'baseUrl'),
     ),

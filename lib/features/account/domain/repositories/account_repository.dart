@@ -4,6 +4,7 @@ import 'package:street_bank/features/account/domain/usecase/params/transfer_bala
 
 abstract class AccountRepository {
   Future<List<Transaction>?> getAllTransactionsLocal();
+  Stream<List<Transaction>?> getAllTransactionsAsStream();
   Future<DataResponse<List<Transaction>?>> getAllTransactionsRemote();
 
   Future<bool> addTransaction(TransferBalanceParams transaction);
